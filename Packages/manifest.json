@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "com.atteneder.basisu": "https://github.com/atteneder/BasisUniversalUnity.git",
+    "com.unity.package-manager-ui": "2.1.2",
+    "com.unity.modules.unitywebrequest": "1.0.0"
+  },
+  "lock": {
+    "com.atteneder.basisu": {
+      "hash": "15f14ef43a558ea777154f200da936dae7d23ec7",
+      "revision": "HEAD"
+    }
+  }
+}
