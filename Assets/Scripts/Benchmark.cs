@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Networking;
+using Unity.Collections;
 using BasisUniversalUnity;
 
 public class Benchmark : MonoBehaviour
@@ -15,7 +16,7 @@ public class Benchmark : MonoBehaviour
     [SerializeField]
     Renderer prefab;
 
-    byte[] data;
+    NativeArray<byte> data;
 
     // Start is called before the first frame update
     IEnumerator Start() {
@@ -26,7 +27,7 @@ public class Benchmark : MonoBehaviour
             Debug.LogErrorFormat("Error loading {0}: {1}",url,webRequest.error);
             yield break;
         }
-        data = webRequest.downloadHandler.data;
+        data = new NativeArray<byte>(webRequest.downloadHandler.data,Allocator.Persistent);
         LoadBatch();
     }
 
@@ -45,10 +46,25 @@ public class Benchmark : MonoBehaviour
         Profiler.BeginSample("LoadBatch");
         for (int i = 0; i < count; i++)
         {
-            var b = Object.Instantiate<Renderer>(prefab);
-            b.transform.position = new Vector3( Random.value, Random.value, Random.value ) * 3 - Vector3.one * 1.5f;
-            b.material.mainTexture = BasisUniversal.LoadBytes(data);
+            var bt = new BasisUniversalTexture();
+            bt.onTextureLoaded += ApplyTexture;
+            bt.LoadFromBytes(data,this);
         }
         Profiler.EndSample();
+    }
+
+    void ApplyTexture(Texture2D texture) {
+        Profiler.BeginSample("ApplyTexture");
+        if (texture==null) return;
+        var b = Object.Instantiate<Renderer>(prefab);
+        b.transform.position = new Vector3( Random.value, Random.value, Random.value ) * 3 - Vector3.one * 1.5f;
+        b.material.mainTexture = texture;
+        Profiler.EndSample();
+    }
+
+    void OnDestroy() {
+        if(data!=null) {
+            data.Dispose();
+        }
     }
 }
