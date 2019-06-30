@@ -2,6 +2,12 @@
 
 Unity project that demonstrates how to use the [BasisUniversalUnity package](https://github.com/atteneder/BasisUniversalUnity).
 
+## Support
+
+Like this demo? You can show your appreciation and ...
+
+[![Buy me a coffee](https://az743702.vo.msecnd.net/cdn/kofi1.png?v=0)](https://ko-fi.com/C0C3BW7G)
+
 ## License
 
 Copyright (c) 2019 Andreas Atteneder, All Rights Reserved.
