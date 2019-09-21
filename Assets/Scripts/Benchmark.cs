@@ -32,8 +32,14 @@ public class Benchmark : MonoBehaviour
 
     NativeArray<byte> data;
 
+    float spread = 3;
+    float step = -.001f;
+    float distance = 10;
+    float aspectRatio = 1.5f;
+
     // Start is called before the first frame update
     IEnumerator Start() {
+        aspectRatio = Screen.width/(float)Screen.height;
         var url = BasisUniversalTexture.GetStreamingAssetsUrl(filePath);
         var webRequest = UnityWebRequest.Get(url);
         yield return webRequest.SendWebRequest();
@@ -42,7 +48,7 @@ public class Benchmark : MonoBehaviour
             yield break;
         }
         data = new NativeArray<byte>(webRequest.downloadHandler.data,Allocator.Persistent);
-        LoadBatch();
+        // LoadBatch();
     }
 
     // Update is called once per frame
@@ -71,7 +77,12 @@ public class Benchmark : MonoBehaviour
         Profiler.BeginSample("ApplyTexture");
         if (texture==null) return;
         var b = Object.Instantiate<Renderer>(prefab);
-        b.transform.position = new Vector3( Random.value, Random.value, Random.value ) * 3 - Vector3.one * 1.5f;
+        b.transform.position = new Vector3(
+            (Random.value-.5f)* spread * aspectRatio,
+            (Random.value-.5f)* spread,
+            distance
+            );
+        distance+=step;
         b.material.mainTexture = texture;
         Profiler.EndSample();
     }
