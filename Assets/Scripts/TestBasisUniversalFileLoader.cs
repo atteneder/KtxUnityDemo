@@ -19,8 +19,6 @@ public class TestBasisUniversalFileLoader : TextureFileLoader<BasisUniversalTest
 {
     public BasisUniversalTestTexture overrideTexture;
 
-    // public TestKtxFileLoader(){}
-
     protected override void Start() {
         LoadFromStreamingAssets(overrideTexture);
     }

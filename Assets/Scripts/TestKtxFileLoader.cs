@@ -19,8 +19,6 @@ public class TestKtxFileLoader : TextureFileLoader<KtxTestTexture>
 {
     public KtxTestTexture overrideTexture;
 
-    // public TestKtxFileLoader(){}
-
     protected override void Start() {
         LoadFromStreamingAssets(overrideTexture);
     }

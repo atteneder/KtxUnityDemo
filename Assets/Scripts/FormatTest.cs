@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
@@ -78,6 +77,7 @@ public class FormatTest : MonoBehaviour
     void FormatGUI(float barWidth) {
         float y = yGap;
         if( GUI.Button( new Rect(0,y,buttonWidth-barWidth,buttonHeight),"choose texture")) {
+            scrollPos = Vector2.zero;
             file = null;
         }
         y += buttonHeight + yGap;
@@ -87,13 +87,11 @@ public class FormatTest : MonoBehaviour
         float aWidth = (buttonWidth-barWidth)/2;
 
         foreach(var f in graphicsFormats) {
-            var label = f.Key.ToString();
+            var label = string.Format("{0}/{1}",f.Key,f.Value);
             if( GUI.Button( new Rect(0,y,aWidth,buttonHeight),label)) {
-                scrollPos = Vector2.zero;
                 LoadTextureBasis(file+".basis",f.Value,null,f.Key);
             }
             if( GUI.Button( new Rect(aWidth,y,aWidth,buttonHeight),label)) {
-                scrollPos = Vector2.zero;
                 LoadTextureKtx(file+".ktx",f.Value,null,f.Key);
             }
             y += buttonHeight + yGap;
@@ -102,13 +100,11 @@ public class FormatTest : MonoBehaviour
         GUI.color = new Color(.5f,1,.5f);
 
         foreach(var f in textureFormats) {
-            var label = f.Key.ToString();
+            var label = string.Format("{0}/{1}",f.Key,f.Value);
             if( GUI.Button( new Rect(0,y,aWidth,buttonHeight),label)) {
-                scrollPos = Vector2.zero;
                 LoadTextureBasis(file+".basis",f.Value,f.Key);
             }
             if( GUI.Button( new Rect(aWidth,y,aWidth,buttonHeight),label)) {
-                scrollPos = Vector2.zero;
                 LoadTextureKtx(file+".ktx",f.Value,f.Key);
             }
             y += buttonHeight + yGap;
@@ -124,6 +120,7 @@ public class FormatTest : MonoBehaviour
         if( tf.HasValue ) {
             txt.textureFormat = tf;
         } else {
+            txt.textureFormat = null;
             txt.graphicsFormat = gf;
         }
         txt.transF = transF;
@@ -146,6 +143,7 @@ public class FormatTest : MonoBehaviour
             txt.graphicsFormat = gf;
         }
         txt.transF = transF;
+
         var testLoader = Object.Instantiate<TestKtxFileLoader>(prefab);
         testLoader.overrideTexture = txt;
         testLoader.filePath = file;
