@@ -15,9 +15,17 @@
 using UnityEngine;
 using KtxUnity;
 
-public class CustomBasisUrlLoader : TextureUrlLoader<BasisUniversalTexture>
+public class TestBasisUniversalFileLoader : TextureFileLoader<BasisUniversalTestTexture>
 {
-   protected override void ApplyTexture(Texture2D texture) {
+    public BasisUniversalTestTexture overrideTexture;
+
+    // public TestKtxFileLoader(){}
+
+    protected override void Start() {
+        LoadFromStreamingAssets(overrideTexture);
+    }
+
+    protected override void ApplyTexture(Texture2D texture) {
         var renderer = GetComponent<Renderer>();
         if(renderer!=null && renderer.sharedMaterial!=null) {
             renderer.material.mainTexture = texture;

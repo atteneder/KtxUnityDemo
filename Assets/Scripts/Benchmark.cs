@@ -17,18 +17,18 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Networking;
 using Unity.Collections;
-using BasisUniversalUnity;
+using KtxUnity;
 
 public class Benchmark : MonoBehaviour
-{
+{ 
     [SerializeField]
-    private string filePath;
+    private string filePath = "";
 
     [SerializeField]
     private int count = 10;
 
     [SerializeField]
-    Renderer prefab;
+    Renderer prefab = null;
 
     NativeArray<byte> data;
 
@@ -40,7 +40,7 @@ public class Benchmark : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start() {
         aspectRatio = Screen.width/(float)Screen.height;
-        var url = BasisUniversalTexture.GetStreamingAssetsUrl(filePath);
+        var url = TextureBase.GetStreamingAssetsUrl(filePath);
         var webRequest = UnityWebRequest.Get(url);
         yield return webRequest.SendWebRequest();
         if(!string.IsNullOrEmpty(webRequest.error)) {
@@ -66,7 +66,7 @@ public class Benchmark : MonoBehaviour
         Profiler.BeginSample("LoadBatch");
         for (int i = 0; i < count; i++)
         {
-            var bt = new BasisUniversalTexture();
+            var bt = new KtxTexture();
             bt.onTextureLoaded += ApplyTexture;
             bt.LoadFromBytes(data,this);
         }

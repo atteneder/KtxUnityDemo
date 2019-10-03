@@ -94,8 +94,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &685750963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +177,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -209,7 +210,7 @@ Transform:
   m_LocalScale: {x: 0.1277432, y: 0.071887, z: 0.071887}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -303,7 +304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1175784549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9e224738b214e56ae513a2e352d074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: https://github.com/atteneder/BasisUniversalUnityDemo/raw/master/Assets/StreamingAssets/dachstein.basis
+  url: http://localhost:9000/dachstein.basis
 --- !u!23 &1175784550
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -342,6 +343,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -374,7 +376,7 @@ Transform:
   m_LocalScale: {x: 0.1277432, y: 0.071887, z: 0.071887}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1340793416
 GameObject:
@@ -433,6 +435,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -465,7 +468,7 @@ Transform:
   m_LocalScale: {x: 0.071887, y: 0.071887, z: 0.071887}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1441608714
 GameObject:
@@ -524,6 +527,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -556,8 +560,77 @@ Transform:
   m_LocalScale: {x: 0.071887, y: 0.071887, z: 0.071887}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1001 &1493281952
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1863225681570200816, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_Name
+      value: Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.046910018
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.37381
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.5527137e-15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b53a934d2fe7c40c497d155c24d44088, type: 3}
 --- !u!1 &1886793333
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +649,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1886793334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,7 +662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9e224738b214e56ae513a2e352d074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: https://github.com/atteneder/BasisUniversalUnityDemo/raw/master/Assets/StreamingAssets/trout.basis
+  url: http://localhost:9000/trout.basis
 --- !u!23 &1886793335
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -615,6 +688,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -647,7 +721,7 @@ Transform:
   m_LocalScale: {x: 0.071887, y: 0.071887, z: 0.071887}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1912978768
 GameObject:
@@ -667,7 +741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1912978769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,7 +754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9e224738b214e56ae513a2e352d074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: https://github.com/atteneder/BasisUniversalUnityDemo/raw/master/Assets/StreamingAssets/alpha.basis
+  url: http://localhost:9000/alpha.basis
 --- !u!23 &1912978770
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -706,6 +780,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -738,5 +813,5 @@ Transform:
   m_LocalScale: {x: 0.071887, y: 0.071887, z: 0.071887}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}

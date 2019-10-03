@@ -13,9 +13,9 @@
 // limitations under the License.
 
 using UnityEngine;
-using BasisUniversalUnity;
+using KtxUnity;
 
-public class CustomKtxFileLoader : KtxFileLoader
+public class CustomKtxFileLoader : TextureFileLoader<KtxTexture>
 {
     protected override void ApplyTexture(Texture2D texture) {
         var renderer = GetComponent<Renderer>();
