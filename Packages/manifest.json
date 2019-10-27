@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.atteneder.basisu": "https://github.com/atteneder/BasisUniversalUnity.git",
+    "com.atteneder.ktx": "https://gitlab.com/atteneder/ktxunity.git",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.vscode": "1.1.2",
     "com.unity.package-manager-ui": "2.2.0",
