@@ -19,27 +19,12 @@ using KtxUnity;
 public class BasisUniversalTestTexture : BasisUniversalTexture
 {
     public GraphicsFormat graphicsFormat;
-    public TextureFormat? textureFormat;
     public TranscodeFormat transF;
 
-    protected override bool GetFormat(
+    protected override TranscodeFormatTuple? GetFormat(
         IMetaData meta,
-        ILevelInfo li,
-        out GraphicsFormat graphicsFormat,
-        out TextureFormat? textureFormat,
-        out TranscodeFormat transF
+        ILevelInfo li
     ) {
-
-        graphicsFormat = GraphicsFormat.None;
-        textureFormat = null;
-        transF = this.transF;
-
-        if(this.textureFormat.HasValue) {
-            textureFormat = this.textureFormat;
-        } else {
-            graphicsFormat = this.graphicsFormat;
-        }
-
-        return true;
+        return new TranscodeFormatTuple(this.graphicsFormat,this.transF);
     }
 }
