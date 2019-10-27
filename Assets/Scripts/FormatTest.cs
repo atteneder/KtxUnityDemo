@@ -24,11 +24,11 @@ public class FormatTest : MonoBehaviour
     [SerializeField] TestKtxFileLoader prefab = null;
     [SerializeField] TestBasisUniversalFileLoader basisuPrefab = null;
 
-    [SerializeField] float buttonWidth = 300;
+    [SerializeField] float buttonWidth = 500;
     [SerializeField] float buttonHeight = 70;
     [SerializeField] float yGap = 5;
 
-    List<KeyValuePair<GraphicsFormat,TranscodeFormat>> graphicsFormats;
+    List<TranscodeFormatTuple> graphicsFormats;
     List<KeyValuePair<TextureFormat,TranscodeFormat>> textureFormats;
 
     string file;
@@ -87,42 +87,23 @@ public class FormatTest : MonoBehaviour
         float aWidth = (buttonWidth-barWidth)/2;
 
         foreach(var f in graphicsFormats) {
-            var label = string.Format("{0}/{1}",f.Key,f.Value);
+            var label = string.Format("{0}/{1}",f.format,f.transcodeFormat);
             if( GUI.Button( new Rect(0,y,aWidth,buttonHeight),label)) {
-                LoadTextureBasis(file+".basis",f.Value,null,f.Key);
+                LoadTextureBasis(file+".basis",f.transcodeFormat,f.format);
             }
             if( GUI.Button( new Rect(aWidth,y,aWidth,buttonHeight),label)) {
-                LoadTextureKtx(file+".ktx",f.Value,null,f.Key);
+                LoadTextureKtx(file+".ktx",f.transcodeFormat,f.format);
             }
             y += buttonHeight + yGap;
         }
-
-        GUI.color = new Color(.5f,1,.5f);
-
-        foreach(var f in textureFormats) {
-            var label = string.Format("{0}/{1}",f.Key,f.Value);
-            if( GUI.Button( new Rect(0,y,aWidth,buttonHeight),label)) {
-                LoadTextureBasis(file+".basis",f.Value,f.Key);
-            }
-            if( GUI.Button( new Rect(aWidth,y,aWidth,buttonHeight),label)) {
-                LoadTextureKtx(file+".ktx",f.Value,f.Key);
-            }
-            y += buttonHeight + yGap;
-        }
-        
     }
 
-    void LoadTextureBasis(string file, TranscodeFormat transF, TextureFormat? tf, GraphicsFormat gf = GraphicsFormat.None ) {
+    void LoadTextureBasis(string file, TranscodeFormat transF, GraphicsFormat gf ) {
         if (currentGo!=null) {
             Destroy(currentGo);
         }
         var txt = new BasisUniversalTestTexture();
-        if( tf.HasValue ) {
-            txt.textureFormat = tf;
-        } else {
-            txt.textureFormat = null;
-            txt.graphicsFormat = gf;
-        }
+        txt.graphicsFormat = gf;
         txt.transF = transF;
 
         var testLoader = Object.Instantiate<TestBasisUniversalFileLoader>(basisuPrefab);
@@ -131,17 +112,12 @@ public class FormatTest : MonoBehaviour
         currentGo = testLoader.gameObject;
     }
 
-    void LoadTextureKtx(string file, TranscodeFormat transF, TextureFormat? tf, GraphicsFormat gf = GraphicsFormat.None ) {
+    void LoadTextureKtx(string file, TranscodeFormat transF, GraphicsFormat gf ) {
         if (currentGo!=null) {
             Destroy(currentGo);
         }
         var txt = new KtxTestTexture();
-        if( tf.HasValue ) {
-            txt.textureFormat = tf;
-        } else {
-            txt.textureFormat = null;
-            txt.graphicsFormat = gf;
-        }
+        txt.graphicsFormat = gf;
         txt.transF = transF;
 
         var testLoader = Object.Instantiate<TestKtxFileLoader>(prefab);

@@ -156,7 +156,7 @@ MonoBehaviour:
   prefab: {fileID: 8170070155179428429, guid: a87b42f548b634222b6edd428dfdd4f6, type: 3}
   basisuPrefab: {fileID: 760777298416911234, guid: 2c657347352ff4ea0ba73b1dae1aa491,
     type: 3}
-  buttonWidth: 300
+  buttonWidth: 500
   buttonHeight: 70
   yGap: 5
 --- !u!4 &912315604
