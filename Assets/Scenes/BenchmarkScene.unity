@@ -223,9 +223,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4997b6dc00d674e6a914e1eae183ed64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: trout.ktx
-  count: 10
+  filePaths:
+  - trout.ktx
+  - alpha.ktx
+  - dachstein.ktx
   prefab: {fileID: 7549154262658669201, guid: afc1581a2404e4bb3b8385fa3ca3753f, type: 3}
+  width: 300
+  height: 100
+  yGap: 10
 --- !u!4 &1566379093
 Transform:
   m_ObjectHideFlags: 0

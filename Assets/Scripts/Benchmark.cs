@@ -22,15 +22,17 @@ using KtxUnity;
 public class Benchmark : MonoBehaviour
 { 
     [SerializeField]
-    private string filePath = "";
-
-    [SerializeField]
-    private int count = 10;
+    private string[] filePaths;
 
     [SerializeField]
     Renderer prefab = null;
 
+    [SerializeField] float width = 300;
+    [SerializeField] float height = 100;
+    [SerializeField] float yGap = 10;
+
     NativeArray<byte> data;
+    int total_count = 0;
 
     float spread = 3;
     float step = -.001f;
@@ -38,8 +40,50 @@ public class Benchmark : MonoBehaviour
     float aspectRatio = 1.5f;
 
     // Start is called before the first frame update
-    IEnumerator Start() {
+    void Start() {
         aspectRatio = Screen.width/(float)Screen.height;
+    }
+
+    void OnGUI() {
+        float x = Screen.width-width;
+        float y = yGap;
+        if(data.IsCreated) {
+            if( GUI.Button( new Rect(x,y,width,height),"Change image")) {
+                data.Dispose();
+            }
+            y += height + yGap;
+
+            if( GUI.Button( new Rect(x,y,width,height),"+10")) {
+                LoadBatch(10);
+            }
+            y += height + yGap;
+
+            if( GUI.Button( new Rect(x,y,width,height),"+50")) {
+                LoadBatch(50);
+            }
+            y += height + yGap;
+
+            if( GUI.Button( new Rect(x,y,width,height),"+endless")) {
+                StartCoroutine(NeverEndingStory());
+            }
+            y += height + yGap;
+        } else {
+            foreach(var filePath in filePaths) {
+                if( GUI.Button( new Rect(x,y,width,height),filePath)) {
+                    StartCoroutine(LoadData(filePath));
+                }
+                y += height + yGap;
+            }
+        }
+
+        GUI.skin.label.fontSize = 100;
+        GUI.Label(new Rect(0,Screen.height-height-yGap,width,height),total_count.ToString());
+    }
+
+    IEnumerator LoadData(string filePath) {
+        if(data.IsCreated) {
+            data.Dispose();
+        }
         var url = TextureBase.GetStreamingAssetsUrl(filePath);
         var webRequest = UnityWebRequest.Get(url);
         yield return webRequest.SendWebRequest();
@@ -48,21 +92,9 @@ public class Benchmark : MonoBehaviour
             yield break;
         }
         data = new NativeArray<byte>(webRequest.downloadHandler.data,Allocator.Persistent);
-        // LoadBatch();
     }
 
-    // Update is called once per frame
-    void Update() {
-        if(data!=null &&
-        (
-            Input.GetKeyDown(KeyCode.Space)
-            || (Input.touchCount>0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        )) {
-            LoadBatch();
-        }
-    }
-
-    void LoadBatch() {
+    void LoadBatch(int count) {
         Profiler.BeginSample("LoadBatch");
         for (int i = 0; i < count; i++)
         {
@@ -73,9 +105,21 @@ public class Benchmark : MonoBehaviour
         Profiler.EndSample();
     }
 
+    IEnumerator NeverEndingStory() {
+        while(true)
+        {
+            var bt = new KtxTexture();
+            bt.onTextureLoaded += ApplyTexture;
+            bt.LoadFromBytes(data,this);
+            yield return null;
+        }
+    }
+
     void ApplyTexture(Texture2D texture) {
         Profiler.BeginSample("ApplyTexture");
         if (texture==null) return;
+        total_count++;
+        Debug.LogFormat("Added image {0}",total_count);
         var b = Object.Instantiate<Renderer>(prefab);
         b.transform.position = new Vector3(
             (Random.value-.5f)* spread * aspectRatio,
@@ -88,7 +132,7 @@ public class Benchmark : MonoBehaviour
     }
 
     void OnDestroy() {
-        if(data!=null) {
+        if(data.IsCreated) {
             data.Dispose();
         }
     }
