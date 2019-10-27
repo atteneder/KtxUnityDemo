@@ -20,7 +20,14 @@ using Unity.Collections;
 using KtxUnity;
 
 public class Benchmark : MonoBehaviour
-{ 
+{
+    enum ImageType {
+        None,
+        KTX,
+        PNG,
+        JPG
+    }
+
     [SerializeField]
     private string[] filePaths;
 
@@ -32,6 +39,8 @@ public class Benchmark : MonoBehaviour
     [SerializeField] float yGap = 10;
 
     NativeArray<byte> data;
+    byte[] dataArray;
+    ImageType currentType = ImageType.None;
     int total_count = 0;
 
     float spread = 3;
@@ -50,6 +59,7 @@ public class Benchmark : MonoBehaviour
         if(data.IsCreated) {
             if( GUI.Button( new Rect(x,y,width,height),"Change image")) {
                 data.Dispose();
+                currentType = ImageType.None;
             }
             y += height + yGap;
 
@@ -67,7 +77,8 @@ public class Benchmark : MonoBehaviour
                 StartCoroutine(NeverEndingStory());
             }
             y += height + yGap;
-        } else {
+        } else
+        if (currentType == ImageType.None) {
             foreach(var filePath in filePaths) {
                 if( GUI.Button( new Rect(x,y,width,height),filePath)) {
                     StartCoroutine(LoadData(filePath));
@@ -81,6 +92,16 @@ public class Benchmark : MonoBehaviour
     }
 
     IEnumerator LoadData(string filePath) {
+        if(filePath.EndsWith(".ktx")) {
+            currentType = ImageType.KTX;
+        } else if(filePath.EndsWith(".png")) {
+            currentType = ImageType.PNG;
+        } else if(filePath.EndsWith(".jpg")) {
+            currentType = ImageType.JPG;
+        } else {
+            Debug.LogError("Unknown image type");
+            yield break;
+        }
         if(data.IsCreated) {
             data.Dispose();
         }
@@ -92,26 +113,43 @@ public class Benchmark : MonoBehaviour
             yield break;
         }
         data = new NativeArray<byte>(webRequest.downloadHandler.data,Allocator.Persistent);
+        dataArray = data.ToArray();
     }
 
     void LoadBatch(int count) {
         Profiler.BeginSample("LoadBatch");
         for (int i = 0; i < count; i++)
         {
-            var bt = new KtxTexture();
-            bt.onTextureLoaded += ApplyTexture;
-            bt.LoadFromBytes(data,this);
+            if(currentType==ImageType.KTX) {
+                var bt = new KtxTexture();
+                bt.onTextureLoaded += ApplyTexture;
+                bt.LoadFromBytes(data,this);
+            } else {
+                var texture = new Texture2D(2,2);
+                texture.LoadImage(data.ToArray());
+                ApplyTexture(texture);
+            }
         }
         Profiler.EndSample();
     }
 
     IEnumerator NeverEndingStory() {
-        while(true)
-        {
-            var bt = new KtxTexture();
-            bt.onTextureLoaded += ApplyTexture;
-            bt.LoadFromBytes(data,this);
-            yield return null;
+        if(currentType==ImageType.KTX) {
+            while(true)
+            {
+                var bt = new KtxTexture();
+                bt.onTextureLoaded += ApplyTexture;
+                bt.LoadFromBytes(data,this);
+                yield return null;
+            }
+        } else {
+            while(true)
+            {
+                var texture = new Texture2D(2,2);
+                texture.LoadImage(data.ToArray(),true);
+                ApplyTexture(texture);
+                yield return null;
+            }
         }
     }
 

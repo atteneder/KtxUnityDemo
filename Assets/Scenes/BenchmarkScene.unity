@@ -227,6 +227,8 @@ MonoBehaviour:
   - trout.ktx
   - alpha.ktx
   - dachstein.ktx
+  - trout.jpg
+  - alpha.png
   prefab: {fileID: 7549154262658669201, guid: afc1581a2404e4bb3b8385fa3ca3753f, type: 3}
   width: 300
   height: 100
