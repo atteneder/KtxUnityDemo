@@ -131,7 +131,7 @@ public class Benchmark : MonoBehaviour
                 bt.LoadFromBytes(data,this);
             } else {
                 var texture = new Texture2D(2,2);
-                texture.LoadImage(data.ToArray());
+                texture.LoadImage(data.ToArray(),true);
                 ApplyTexture(texture);
             }
         }
