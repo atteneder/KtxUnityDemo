@@ -63,6 +63,11 @@ public class Benchmark : MonoBehaviour
             }
             y += height + yGap;
 
+            if( GUI.Button( new Rect(x,y,width,height),"+1")) {
+                LoadBatch(1);
+            }
+            y += height + yGap;
+
             if( GUI.Button( new Rect(x,y,width,height),"+10")) {
                 LoadBatch(10);
             }
