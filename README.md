@@ -1,6 +1,6 @@
-# BasisUniversalUnityDemo
+# KtxUnity Demo
 
-Unity project that demonstrates how to use the [BasisUniversalUnity package](https://github.com/atteneder/BasisUniversalUnity).
+Unity project that demonstrates how to use the [KtxUnity package](https://gitlab.com/atteneder/ktxunity).
 
 ## Support
 
@@ -18,7 +18,7 @@ The example images in this project are licensed under a [Creative Commons Attrib
 
 [![License: CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-### Source code 
+### Source code
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use files in this repository except in compliance with the License.
