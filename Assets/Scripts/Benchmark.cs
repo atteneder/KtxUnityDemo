@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Networking;
@@ -47,6 +48,10 @@ public class Benchmark : MonoBehaviour
     float step = -.001f;
     float distance = 10;
     float aspectRatio = 1.5f;
+
+    // Render maximum of 50 at a time (the rest is still in memory)
+    const int MAX_ITEMS = 50;
+    Queue<Renderer> rendererQueue = new Queue<Renderer>(MAX_ITEMS);
 
     // Start is called before the first frame update
     void Start() {
@@ -171,6 +176,13 @@ public class Benchmark : MonoBehaviour
             );
         distance+=step;
         b.material.mainTexture = texture;
+
+        rendererQueue.Enqueue(b);
+        while(rendererQueue.Count>MAX_ITEMS) {
+            var r = rendererQueue.Dequeue();
+            r.enabled = false;
+        }
+
         Profiler.EndSample();
     }
 
