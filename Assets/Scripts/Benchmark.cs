@@ -44,6 +44,10 @@ public class Benchmark : MonoBehaviour
     ImageType currentType = ImageType.None;
     int total_count = 0;
 
+    float start_time;
+    float batch_time = -1;
+    int batch_count = -1;
+
     float spread = 3;
     float step = -.001f;
     float distance = 10;
@@ -99,6 +103,10 @@ public class Benchmark : MonoBehaviour
 
         GUI.skin.label.fontSize = 100;
         GUI.Label(new Rect(0,Screen.height-height-yGap,width,height),total_count.ToString());
+
+        if (batch_time>=0) {
+            GUI.Label(new Rect(Screen.width-width,Screen.height-height-yGap,width,height),batch_time.ToString("0.000"));
+        }
     }
 
     IEnumerator LoadData(string filePath) {
@@ -128,6 +136,9 @@ public class Benchmark : MonoBehaviour
 
     void LoadBatch(int count) {
         Profiler.BeginSample("LoadBatch");
+        start_time = Time.realtimeSinceStartup;
+        batch_count = count;
+        batch_time = -1;
         for (int i = 0; i < count; i++)
         {
             if(currentType==ImageType.KTX) {
@@ -144,12 +155,14 @@ public class Benchmark : MonoBehaviour
     }
 
     IEnumerator NeverEndingStory() {
+        start_time = Time.realtimeSinceStartup;
         if(currentType==ImageType.KTX) {
             while(true)
             {
                 var bt = new KtxTexture();
                 bt.onTextureLoaded += ApplyTexture;
                 bt.LoadFromBytes(data,this);
+                batch_time = Time.realtimeSinceStartup-start_time;
                 yield return null;
             }
         } else {
@@ -158,6 +171,7 @@ public class Benchmark : MonoBehaviour
                 var texture = new Texture2D(2,2);
                 texture.LoadImage(data.ToArray(),true);
                 ApplyTexture(texture);
+                batch_time = Time.realtimeSinceStartup-start_time;
                 yield return null;
             }
         }
@@ -183,6 +197,14 @@ public class Benchmark : MonoBehaviour
             r.enabled = false;
         }
 
+        if(batch_count > 0) {
+            batch_count--;
+            if(batch_count==0) {
+                batch_time = Time.realtimeSinceStartup-start_time;
+                Debug.LogFormat("Batch load time: {0}", batch_time);
+                batch_count = -1;
+            }
+        }
         Profiler.EndSample();
     }
 
