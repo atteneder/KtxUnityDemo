@@ -34,3 +34,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+
+Assets/StreamingAssets/*.ktx*
+Assets/StreamingAssets/*.basis*
+Assets/StreamingAssets/*.png*
+Assets/StreamingAssets/*.jpg*
