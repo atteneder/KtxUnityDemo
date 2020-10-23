@@ -30,7 +30,7 @@ public class Benchmark : MonoBehaviour
     }
 
     [SerializeField]
-    private string[] filePaths;
+    private string[] filePaths = null;
 
     [SerializeField]
     Renderer prefab = null;
@@ -148,7 +148,7 @@ public class Benchmark : MonoBehaviour
             } else {
                 var texture = new Texture2D(2,2);
                 texture.LoadImage(data.ToArray(),true);
-                ApplyTexture(texture);
+                ApplyTexture(texture,TextureOrientation.UNITY_DEFAULT);
             }
         }
         Profiler.EndSample();
@@ -170,14 +170,14 @@ public class Benchmark : MonoBehaviour
             {
                 var texture = new Texture2D(2,2);
                 texture.LoadImage(data.ToArray(),true);
-                ApplyTexture(texture);
+                ApplyTexture(texture,TextureOrientation.UNITY_DEFAULT);
                 batch_time = Time.realtimeSinceStartup-start_time;
                 yield return null;
             }
         }
     }
 
-    void ApplyTexture(Texture2D texture) {
+    void ApplyTexture(Texture2D texture, TextureOrientation orientation) {
         Profiler.BeginSample("ApplyTexture");
         if (texture==null) return;
         total_count++;
@@ -190,6 +190,10 @@ public class Benchmark : MonoBehaviour
             );
         distance+=step;
         b.material.mainTexture = texture;
+        var scale = b.material.mainTextureScale;
+        scale.x = orientation.IsXFlipped() ? -1 : 1;
+        scale.y = orientation.IsYFlipped() ? -1 : 1;
+        b.material.mainTextureScale = scale;
 
         rendererQueue.Enqueue(b);
         while(rendererQueue.Count>MAX_ITEMS) {

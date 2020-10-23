@@ -23,7 +23,8 @@ public class BasisUniversalTestTexture : BasisUniversalTexture
 
     protected override TranscodeFormatTuple? GetFormat(
         IMetaData meta,
-        ILevelInfo li
+        ILevelInfo li,
+        bool linear = false
     ) {
         return new TranscodeFormatTuple(this.graphicsFormat,this.transF);
     }

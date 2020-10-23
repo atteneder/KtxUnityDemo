@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -229,6 +230,10 @@ MonoBehaviour:
   - dachstein.ktx
   - trout.jpg
   - alpha.png
+  - trout_mip.ktx
+  - alpha_mip.ktx
+  - trout_uastc_mip.ktx
+  - trout_uastcZ_mip.ktx
   prefab: {fileID: 7549154262658669201, guid: afc1581a2404e4bb3b8385fa3ca3753f, type: 3}
   width: 300
   height: 100

@@ -17,10 +17,15 @@ using KtxUnity;
 
 public class CustomKtxUrlLoader : TextureUrlLoader<KtxTexture>
 {
-   protected override void ApplyTexture(Texture2D texture) {
+   protected override void ApplyTexture(Texture2D texture, TextureOrientation orientation) {
         var renderer = GetComponent<Renderer>();
         if(renderer!=null && renderer.sharedMaterial!=null) {
             renderer.material.mainTexture = texture;
+            // Optional: Support arbitrary texture orientation by flipping the texture if necessary
+            var scale = renderer.material.mainTextureScale;
+            scale.x = orientation.IsXFlipped() ? -1 : 1;
+            scale.y = orientation.IsYFlipped() ? -1 : 1;
+            renderer.material.mainTextureScale = scale;
         }
     }
 }

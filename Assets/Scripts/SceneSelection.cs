@@ -38,8 +38,33 @@ public class SceneSelection : MonoBehaviour
         }
         y += height + yGap;
 
+        if( GUI.Button( new Rect(0,y,width,height),"BasisU UASTC scene")) {
+            SceneManager.LoadScene("SampleSceneBasisUniversalUASTC",LoadSceneMode.Single);
+        }
+        y += height + yGap;
+
+        if( GUI.Button( new Rect(0,y,width,height),"BasisU Canvas scene")) {
+            SceneManager.LoadScene("SampleSceneBasisUniversalCanvas",LoadSceneMode.Single);
+        }
+        y += height + yGap;
+
         if( GUI.Button( new Rect(0,y,width,height),"KTX scene")) {
             SceneManager.LoadScene("SampleSceneKtx",LoadSceneMode.Single);
+        }
+        y += height + yGap;
+
+        if( GUI.Button( new Rect(0,y,width,height),"KTX UASTC scene")) {
+            SceneManager.LoadScene("SampleSceneKtxUASTC",LoadSceneMode.Single);
+        }
+        y += height + yGap;
+
+        if( GUI.Button( new Rect(0,y,width,height),"KTX UASTC Z scene")) {
+            SceneManager.LoadScene("SampleSceneKtxUASTCZ",LoadSceneMode.Single);
+        }
+        y += height + yGap;
+
+        if( GUI.Button( new Rect(0,y,width,height),"KTX Normal scene")) {
+            SceneManager.LoadScene("SampleSceneKtxNormal",LoadSceneMode.Single);
         }
         y += height + yGap;
 

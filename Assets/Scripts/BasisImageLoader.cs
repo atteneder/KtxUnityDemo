@@ -12,20 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using KtxUnity;
+using UnityEngine.UI;
 
-public class KtxTestTexture : KtxTexture
+public class BasisImageLoader : TextureFileLoader<BasisUniversalTexture>
 {
-    public GraphicsFormat graphicsFormat;
-    public TranscodeFormat transF;
 
-    protected override TranscodeFormatTuple? GetFormat(
-        IMetaData meta,
-        ILevelInfo li,
-        bool linear = false
-    ) {
-        return new TranscodeFormatTuple(this.graphicsFormat,this.transF);
+    protected override void ApplyTexture(Texture2D texture, TextureOrientation orientation)
+    {
+        Vector2 pos = new Vector2(0,0);
+        Vector2 size = new Vector2(texture.width, texture.height);
+
+        if(orientation.IsXFlipped()) {
+            pos.x = size.x;
+            size.x *= -1;
+        }
+
+        if(orientation.IsYFlipped()) {
+            pos.y = size.y;
+            size.y *= -1;
+        }
+
+        GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(pos, size), Vector2.zero);
     }
 }
