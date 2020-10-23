@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 1340793419}
   - component: {fileID: 1340793417}
   m_Layer: 0
-  m_Name: trout
+  m_Name: trout_video
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5c86f99551c471b9e075fa038bb74a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: kodim18.basis
+  filePath: trout_video.basis
   linear: 0
 --- !u!23 &1340793419
 MeshRenderer:
