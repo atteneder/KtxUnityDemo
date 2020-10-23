@@ -1,1 +1,1 @@
-The test texture files have to be downloaded separately and extracted into this folder (look at README.md at the root of this project for the link).
+The example image files have to be downloaded separately and extracted into this folder (look at README.md at the root of this project for the link).
