@@ -17,7 +17,7 @@
   },
   "scopedRegistries": [
     {
-      "name": "package.openupm.com",
+      "name": "Atteneder",
       "url": "https://package.openupm.com",
       "scopes": [
         "com.atteneder"
