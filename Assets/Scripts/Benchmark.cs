@@ -14,6 +14,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -57,6 +58,8 @@ public class Benchmark : MonoBehaviour
     // Render maximum of 50 at a time (the rest is still in memory)
     const int MAX_ITEMS = 50;
     Queue<Renderer> rendererQueue = new Queue<Renderer>(MAX_ITEMS);
+
+    CancellationTokenSource cancellationTokenSource;
 
     // Start is called before the first frame update
     void Start() {
@@ -155,22 +158,29 @@ public class Benchmark : MonoBehaviour
         Profiler.EndSample();
     }
 
-    async void NeverEndingStory() {
+    void NeverEndingStory() {
+        cancellationTokenSource = new CancellationTokenSource();
+        NeverEndingStoryLoop();
+    }
+
+    async void NeverEndingStoryLoop() {
         start_time = Time.realtimeSinceStartup;
         if(currentType==ImageType.KTX) {
-            while(true)
+            while(!cancellationTokenSource.IsCancellationRequested)
             {
                 var bt = new KtxTexture();
                 var result = await bt.LoadFromBytes(data,this);
+                if (cancellationTokenSource.IsCancellationRequested) break;
                 ApplyTexture(result);
                 batch_time = Time.realtimeSinceStartup-start_time;
                 await Task.Yield();
             }
         } else {
-            while(true)
+            while(!cancellationTokenSource.IsCancellationRequested)
             {
                 var texture = new Texture2D(2,2);
                 texture.LoadImage(data.ToArray(),true);
+                if (cancellationTokenSource.IsCancellationRequested) break;
                 ApplyTexture(new TextureResult(texture,TextureOrientation.UNITY_DEFAULT));
                 batch_time = Time.realtimeSinceStartup-start_time;
                 await Task.Yield();
@@ -190,8 +200,9 @@ public class Benchmark : MonoBehaviour
             distance
             );
         distance+=step;
-        b.material.mainTexture = result.texture;
-        var scale = b.material.mainTextureScale;
+        var material = b.material;
+        material.mainTexture = result.texture;
+        var scale = material.mainTextureScale;
         scale.x = result.orientation.IsXFlipped() ? -1 : 1;
         scale.y = result.orientation.IsYFlipped() ? -1 : 1;
         b.material.mainTextureScale = scale;
@@ -215,6 +226,7 @@ public class Benchmark : MonoBehaviour
     }
 
     void OnDestroy() {
+        cancellationTokenSource?.Cancel();
         if(data.IsCreated) {
             data.Dispose();
         }
