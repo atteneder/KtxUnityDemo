@@ -180,7 +180,7 @@ public class Benchmark : MonoBehaviour
 
     void ApplyTexture(TextureResult result) {
         Profiler.BeginSample("ApplyTexture");
-        if (result.texture==null) return;
+        if (result==null) return;
         total_count++;
         Debug.LogFormat("Added image {0}",total_count);
         var b = Object.Instantiate<Renderer>(prefab);

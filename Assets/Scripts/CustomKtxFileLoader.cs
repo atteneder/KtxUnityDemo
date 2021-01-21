@@ -17,6 +17,11 @@ using KtxUnity;
 
 public class CustomKtxFileLoader : TextureFileLoader<KtxTexture>
 {
+    protected virtual async void Start() {
+        var result = await LoadFromStreamingAssets();
+        OnTextureLoaded(result);
+    }
+    
     protected override void ApplyTexture(TextureResult result) {
         var renderer = GetComponent<Renderer>();
         if(renderer!=null && renderer.sharedMaterial!=null) {
