@@ -20,21 +20,21 @@ using UnityEngine.UI;
 public class BasisImageLoader : TextureFileLoader<BasisUniversalTexture>
 {
 
-    protected override void ApplyTexture(Texture2D texture, TextureOrientation orientation)
+    protected override void ApplyTexture(TextureResult result)
     {
         Vector2 pos = new Vector2(0,0);
-        Vector2 size = new Vector2(texture.width, texture.height);
+        Vector2 size = new Vector2(result.texture.width, result.texture.height);
 
-        if(orientation.IsXFlipped()) {
+        if(result.orientation.IsXFlipped()) {
             pos.x = size.x;
             size.x *= -1;
         }
 
-        if(orientation.IsYFlipped()) {
+        if(result.orientation.IsYFlipped()) {
             pos.y = size.y;
             size.y *= -1;
         }
 
-        GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(pos, size), Vector2.zero);
+        GetComponent<Image>().sprite = Sprite.Create(result.texture, new Rect(pos, size), Vector2.zero);
     }
 }

@@ -19,18 +19,19 @@ public class TestKtxFileLoader : TextureFileLoader<KtxTestTexture>
 {
     public KtxTestTexture overrideTexture;
 
-    protected override void Start() {
-        LoadFromStreamingAssets(overrideTexture);
+    protected override async void Start() {
+        var result = await LoadFromStreamingAssets(overrideTexture);
+        ApplyTexture(result);
     }
 
-    protected override void ApplyTexture(Texture2D texture, TextureOrientation orientation) {
+    protected override void ApplyTexture(TextureResult result) {
         var renderer = GetComponent<Renderer>();
         if(renderer!=null && renderer.sharedMaterial!=null) {
-            renderer.material.mainTexture = texture;
+            renderer.material.mainTexture = result.texture;
             // Optional: Support arbitrary texture orientation by flipping the texture if necessary
             var scale = renderer.material.mainTextureScale;
-            scale.x = orientation.IsXFlipped() ? -1 : 1;
-            scale.y = orientation.IsYFlipped() ? -1 : 1;
+            scale.x = result.orientation.IsXFlipped() ? -1 : 1;
+            scale.y = result.orientation.IsYFlipped() ? -1 : 1;
             renderer.material.mainTextureScale = scale;
         }
     }

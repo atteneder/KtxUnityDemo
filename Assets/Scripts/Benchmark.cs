@@ -14,6 +14,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Networking;
@@ -88,7 +89,7 @@ public class Benchmark : MonoBehaviour
             y += height + yGap;
 
             if( GUI.Button( new Rect(x,y,width,height),"+endless")) {
-                StartCoroutine(NeverEndingStory());
+                NeverEndingStory();
             }
             y += height + yGap;
         } else
@@ -134,7 +135,7 @@ public class Benchmark : MonoBehaviour
         dataArray = data.ToArray();
     }
 
-    void LoadBatch(int count) {
+    async void LoadBatch(int count) {
         Profiler.BeginSample("LoadBatch");
         start_time = Time.realtimeSinceStartup;
         batch_count = count;
@@ -143,43 +144,43 @@ public class Benchmark : MonoBehaviour
         {
             if(currentType==ImageType.KTX) {
                 var bt = new KtxTexture();
-                bt.onTextureLoaded += ApplyTexture;
-                bt.LoadFromBytes(data,this);
+                var result = await bt.LoadFromBytes(data,this);
+                ApplyTexture(result);
             } else {
                 var texture = new Texture2D(2,2);
                 texture.LoadImage(data.ToArray(),true);
-                ApplyTexture(texture,TextureOrientation.UNITY_DEFAULT);
+                ApplyTexture(new TextureResult(texture,TextureOrientation.UNITY_DEFAULT));
             }
         }
         Profiler.EndSample();
     }
 
-    IEnumerator NeverEndingStory() {
+    async void NeverEndingStory() {
         start_time = Time.realtimeSinceStartup;
         if(currentType==ImageType.KTX) {
             while(true)
             {
                 var bt = new KtxTexture();
-                bt.onTextureLoaded += ApplyTexture;
-                bt.LoadFromBytes(data,this);
+                var result = await bt.LoadFromBytes(data,this);
+                ApplyTexture(result);
                 batch_time = Time.realtimeSinceStartup-start_time;
-                yield return null;
+                await Task.Yield();
             }
         } else {
             while(true)
             {
                 var texture = new Texture2D(2,2);
                 texture.LoadImage(data.ToArray(),true);
-                ApplyTexture(texture,TextureOrientation.UNITY_DEFAULT);
+                ApplyTexture(new TextureResult(texture,TextureOrientation.UNITY_DEFAULT));
                 batch_time = Time.realtimeSinceStartup-start_time;
-                yield return null;
+                await Task.Yield();
             }
         }
     }
 
-    void ApplyTexture(Texture2D texture, TextureOrientation orientation) {
+    void ApplyTexture(TextureResult result) {
         Profiler.BeginSample("ApplyTexture");
-        if (texture==null) return;
+        if (result.texture==null) return;
         total_count++;
         Debug.LogFormat("Added image {0}",total_count);
         var b = Object.Instantiate<Renderer>(prefab);
@@ -189,15 +190,16 @@ public class Benchmark : MonoBehaviour
             distance
             );
         distance+=step;
-        b.material.mainTexture = texture;
+        b.material.mainTexture = result.texture;
         var scale = b.material.mainTextureScale;
-        scale.x = orientation.IsXFlipped() ? -1 : 1;
-        scale.y = orientation.IsYFlipped() ? -1 : 1;
+        scale.x = result.orientation.IsXFlipped() ? -1 : 1;
+        scale.y = result.orientation.IsYFlipped() ? -1 : 1;
         b.material.mainTextureScale = scale;
 
         rendererQueue.Enqueue(b);
         while(rendererQueue.Count>MAX_ITEMS) {
             var r = rendererQueue.Dequeue();
+            if (r == null) return;
             r.enabled = false;
         }
 

@@ -14,24 +14,27 @@
 
 using UnityEngine;
 using KtxUnity;
+using UnityEngine.UI;
 
 public class TestBasisUniversalFileLoader : TextureFileLoader<BasisUniversalTestTexture>
 {
     public BasisUniversalTestTexture overrideTexture;
 
-    protected override void Start() {
-        LoadFromStreamingAssets(overrideTexture);
+    protected override async void Start() {
+        var result = await LoadFromStreamingAssets(overrideTexture);
+        ApplyTexture(result);
     }
 
-    protected override void ApplyTexture(Texture2D texture, TextureOrientation orientation) {
-        var renderer = GetComponent<Renderer>();
-        if(renderer!=null && renderer.sharedMaterial!=null) {
-            renderer.material.mainTexture = texture;
+    protected override void ApplyTexture(TextureResult result) {
+        var rendererComponent = GetComponent<Renderer>();
+        if(rendererComponent!=null && rendererComponent.sharedMaterial!=null) {
+            var material = rendererComponent.material;
+            material.mainTexture = result.texture;
             // Optional: Support arbitrary texture orientation by flipping the texture if necessary
-            var scale = renderer.material.mainTextureScale;
-            scale.x = orientation.IsXFlipped() ? -1 : 1;
-            scale.y = orientation.IsYFlipped() ? -1 : 1;
-            renderer.material.mainTextureScale = scale;
+            var scale = material.mainTextureScale;
+            scale.x = result.orientation.IsXFlipped() ? -1 : 1;
+            scale.y = result.orientation.IsYFlipped() ? -1 : 1;
+            rendererComponent.material.mainTextureScale = scale;
         }
     }
 }
