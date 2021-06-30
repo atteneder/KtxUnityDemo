@@ -40,3 +40,5 @@ Assets/StreamingAssets/*.ktx*
 Assets/StreamingAssets/*.basis*
 Assets/StreamingAssets/*.png*
 Assets/StreamingAssets/*.jpg*
+
+.DS_Store
