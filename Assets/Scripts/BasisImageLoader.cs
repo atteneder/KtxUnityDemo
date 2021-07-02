@@ -20,6 +20,9 @@ using UnityEngine.UI;
 public class BasisImageLoader : TextureFileLoader<BasisUniversalTexture>
 {
 
+    [SerializeField]
+    float scale = 1.0f;
+
     protected override void ApplyTexture(TextureResult result)
     {
         Vector2 pos = new Vector2(0,0);
@@ -36,5 +39,8 @@ public class BasisImageLoader : TextureFileLoader<BasisUniversalTexture>
         }
 
         GetComponent<Image>().sprite = Sprite.Create(result.texture, new Rect(pos, size), Vector2.zero);
+
+        var rt = GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(result.texture.width*scale, result.texture.height*scale);
     }
 }
