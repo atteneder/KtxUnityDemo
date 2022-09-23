@@ -72,5 +72,6 @@ Assets/Textures/**/*.ktx*
 Assets/Textures/**/*.basis*
 Assets/Textures/**/*.png*
 Assets/Textures/**/*.jpg*
+Assets/Textures/Demo/LICENSE.txt*
 
 .DS_Store

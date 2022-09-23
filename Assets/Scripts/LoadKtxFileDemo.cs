@@ -26,10 +26,19 @@ public class LoadKtxFileDemo : MonoBehaviour
         var texture = new KtxTexture();
         
         // Linear color sampling. Needed for non-color value textures (e.g. normal maps) 
-        bool linearColor = true;
+        const bool linearColor = true;
+        
+        // Texture array layer 
+        const uint layer = 0;
+        
+        // Face (in case of cubemap) or slice (in case of 3D texture) to import 
+        const uint faceSlice = 0;
+        
+        // Mipmap level. Allows you to not load the highest resolution?????? 
+        const uint mipLevel = 0;
         
         // Load file from Streaming Assets folder (relative path)
-        var result = await texture.LoadFromStreamingAssets("trout.ktx",linearColor);
+        var result = await texture.LoadFromStreamingAssets("trout.ktx",linearColor,layer,faceSlice,mipLevel);
         
         // Alternative: Load from URL
         // var result = await texture.LoadFromUrl("https://myserver.com/trout.ktx", linearColor);

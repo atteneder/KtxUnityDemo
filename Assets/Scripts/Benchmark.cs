@@ -114,7 +114,7 @@ public class Benchmark : MonoBehaviour
     }
 
     IEnumerator LoadData(string filePath) {
-        if(filePath.EndsWith(".ktx")) {
+        if(filePath.EndsWith(".ktx2")) {
             currentType = ImageType.KTX;
         } else if(filePath.EndsWith(".png")) {
             currentType = ImageType.PNG;
@@ -182,7 +182,7 @@ public class Benchmark : MonoBehaviour
             while(!cancellationTokenSource.IsCancellationRequested)
             {
                 var bt = new KtxTexture();
-                var result = await bt.LoadFromBytes(data,this);
+                var result = await bt.LoadFromBytes(data);
                 if (cancellationTokenSource.IsCancellationRequested) break;
                 ApplyTexture(result);
                 batch_time = Time.realtimeSinceStartup-start_time;
