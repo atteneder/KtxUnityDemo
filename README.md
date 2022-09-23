@@ -2,7 +2,7 @@
 
 Unity project that demonstrates how to use the [KtxUnity package](https://github.com/atteneder/KtxUnity).
 
-You have to download the [Example image files](https://mega.nz/file/GkdUxT4I#7qW3pe3XqZJjm61npnrMvVBYoD5TENE2_q9fEen27Ms) separately and extract them into the `Assets/StreamingAssets` folder.
+You have to download the [Example image files][KtxDemoFiles_v2.zip] separately and extract them into the `Assets/StreamingAssets` folder (for runtime loading tests) and/or `Assets/Textures/Demo` (for Editor import).
 
 ## Support
 
@@ -33,3 +33,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+
+[KtxDemoFiles_v1.zip]: https://mega.nz/file/GkdUxT4I#7qW3pe3XqZJjm61npnrMvVBYoD5TENE2_q9fEen27Ms
+[KtxDemoFiles_v2.zip]: https://mega.nz/file/eokRXYaT#quvAfORPAKyLZ93EmgoYG9nqcC8HA59bzir5enccgkU
