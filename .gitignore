@@ -68,4 +68,9 @@ Assets/StreamingAssets/*.basis*
 Assets/StreamingAssets/*.png*
 Assets/StreamingAssets/*.jpg*
 
+Assets/Textures/**/*.ktx*
+Assets/Textures/**/*.basis*
+Assets/Textures/**/*.png*
+Assets/Textures/**/*.jpg*
+
 .DS_Store
