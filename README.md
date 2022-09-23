@@ -1,6 +1,6 @@
 # KtxUnity Demo
 
-Unity project that demonstrates how to use the [KtxUnity package](https://gitlab.com/atteneder/ktxunity).
+Unity project that demonstrates how to use the [KtxUnity package](https://github.com/atteneder/KtxUnity).
 
 You have to download the [Example image files](https://mega.nz/file/GkdUxT4I#7qW3pe3XqZJjm61npnrMvVBYoD5TENE2_q9fEen27Ms) separately and extract them into the `Assets/StreamingAssets` folder.
 
