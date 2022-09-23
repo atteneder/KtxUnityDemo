@@ -86,8 +86,8 @@ public class Benchmark : MonoBehaviour
             }
             y += height + yGap;
 
-            if( GUI.Button( new Rect(x,y,width,height),"+50")) {
-                LoadBatch(50);
+            if( GUI.Button( new Rect(x,y,width,height),"+500")) {
+                LoadBatch(500);
             }
             y += height + yGap;
 
@@ -143,19 +143,32 @@ public class Benchmark : MonoBehaviour
         start_time = Time.realtimeSinceStartup;
         batch_count = count;
         batch_time = -1;
-        for (int i = 0; i < count; i++)
-        {
-            if(currentType==ImageType.KTX) {
+        if (currentType == ImageType.KTX) {
+            var tasks = new Task[count];
+            for (var i = 0; i < count; i++) {
                 var bt = new KtxTexture();
-                var result = await bt.LoadFromBytes(data,this);
-                ApplyTexture(result);
-            } else {
-                var texture = new Texture2D(2,2);
-                texture.LoadImage(data.ToArray(),true);
-                ApplyTexture(new TextureResult(texture,TextureOrientation.UNITY_DEFAULT));
+                tasks[i] = LoadAndApply(bt);
             }
+            Profiler.EndSample();
+            await Task.WhenAll(tasks);
         }
-        Profiler.EndSample();
+        else {
+            for (var i = 0; i < count; i++) {
+                var texture = new Texture2D(2, 2);
+                texture.LoadImage(data.ToArray(), true);
+                ApplyTexture(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
+            }
+            Profiler.EndSample();
+        }
+        
+        batch_time = Time.realtimeSinceStartup-start_time;
+        Debug.LogFormat("Batch load time: {0}", batch_time);
+        batch_count = -1;
+    }
+
+    async Task LoadAndApply(TextureBase ktx) {
+        var result = await ktx.LoadFromBytes(data);
+        ApplyTexture(result);
     }
 
     void NeverEndingStory() {
@@ -192,7 +205,7 @@ public class Benchmark : MonoBehaviour
         Profiler.BeginSample("ApplyTexture");
         if (result==null) return;
         total_count++;
-        Debug.LogFormat("Added image {0}",total_count);
+        // Debug.LogFormat("Added image {0}",total_count);
         var b = Object.Instantiate<Renderer>(prefab);
         b.transform.position = new Vector3(
             (Random.value-.5f)* spread * aspectRatio,
@@ -214,14 +227,6 @@ public class Benchmark : MonoBehaviour
             r.enabled = false;
         }
 
-        if(batch_count > 0) {
-            batch_count--;
-            if(batch_count==0) {
-                batch_time = Time.realtimeSinceStartup-start_time;
-                Debug.LogFormat("Batch load time: {0}", batch_time);
-                batch_count = -1;
-            }
-        }
         Profiler.EndSample();
     }
 
