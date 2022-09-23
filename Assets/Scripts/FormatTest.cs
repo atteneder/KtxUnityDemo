@@ -37,7 +37,9 @@ public class FormatTest : MonoBehaviour
 
     void Start() {
         TranscodeFormatHelper.Init();
+#if KTX_VERBOSE
         TranscodeFormatHelper.GetSupportedTextureFormats ( out graphicsFormats, out textureFormats );
+#endif
     }
 
     void OnGUI() {
