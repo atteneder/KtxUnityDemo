@@ -80,20 +80,24 @@ public abstract class LoadFileAdvancedDemo : MonoBehaviour
 
             var textureResult = await basisTexture.CreateTexture(
                 imageIndex,
-                mipmapLevelLowerLimit,
                 faceSlice,
+                mipmapLevelLowerLimit,
                 importMipMapChain
                 );
 
             if (textureResult.errorCode == ErrorCode.Success) {
+                var material = Instantiate(targetMaterial);
                 // Use texture. For example, apply texture to a material
-                targetMaterial.mainTexture = textureResult.texture;
+                material.mainTexture = textureResult.texture;
                 
                 // Optional: Support arbitrary texture orientation by flipping the texture if necessary
-                var scale = targetMaterial.mainTextureScale;
+                var scale = material.mainTextureScale;
                 scale.x = textureResult.orientation.IsXFlipped() ? -1 : 1;
                 scale.y = textureResult.orientation.IsYFlipped() ? -1 : 1;
-                targetMaterial.mainTextureScale = scale;
+                material.mainTextureScale = scale;
+
+                var rendererComponent = GetComponent<Renderer>();
+                rendererComponent.material = material;
             }
             
             basisTexture.Dispose();
