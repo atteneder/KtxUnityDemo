@@ -38,10 +38,10 @@ public class LoadKtxFileDemo : MonoBehaviour
         const uint mipLevel = 0;
         
         // Load file from Streaming Assets folder (relative path)
-        var result = await texture.LoadFromStreamingAssets("trout.ktx",linearColor,layer,faceSlice,mipLevel);
+        var result = await texture.LoadFromStreamingAssets("trout.ktx2",linearColor,layer,faceSlice,mipLevel);
         
         // Alternative: Load from URL
-        // var result = await texture.LoadFromUrl("https://myserver.com/trout.ktx", linearColor);
+        // var result = await texture.LoadFromUrl("https://myserver.com/trout.ktx2", linearColor);
         
         // Alternative: Load from memory
         // var result = await texture.LoadFromBytes(nativeArray, linearColor);
