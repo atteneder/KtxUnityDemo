@@ -64,11 +64,11 @@ public abstract class LoadFileAdvancedDemo : MonoBehaviour
         
         using (var data = new ManagedNativeArray(managedData)) {
             
-            var result = basisTexture.Load(data.nativeArray);
+            var result = basisTexture.Open(data.nativeArray);
 
             if (result != ErrorCode.Success) return;
             
-            result = await basisTexture.Transcode(
+            var textureResult = await basisTexture.LoadTexture2D(
                 linear,
                 imageIndex,
                 faceSlice,
@@ -76,34 +76,23 @@ public abstract class LoadFileAdvancedDemo : MonoBehaviour
                 importMipMapChain
                 );
             
-            if (result != ErrorCode.Success) return;
+            if (textureResult.errorCode != ErrorCode.Success) return;
 
-            var textureResult = await basisTexture.CreateTexture(
-                imageIndex,
-                faceSlice,
-                mipmapLevelLowerLimit,
-                importMipMapChain
-                );
+            var material = Instantiate(targetMaterial);
+            // Use texture. For example, apply texture to a material
+            material.mainTexture = textureResult.texture;
+            
+            // Optional: Support arbitrary texture orientation by flipping the texture if necessary
+            var scale = material.mainTextureScale;
+            scale.x = textureResult.orientation.IsXFlipped() ? -1 : 1;
+            scale.y = textureResult.orientation.IsYFlipped() ? -1 : 1;
+            material.mainTextureScale = scale;
 
-            if (textureResult.errorCode == ErrorCode.Success) {
-                var material = Instantiate(targetMaterial);
-                // Use texture. For example, apply texture to a material
-                material.mainTexture = textureResult.texture;
-                
-                // Optional: Support arbitrary texture orientation by flipping the texture if necessary
-                var scale = material.mainTextureScale;
-                scale.x = textureResult.orientation.IsXFlipped() ? -1 : 1;
-                scale.y = textureResult.orientation.IsYFlipped() ? -1 : 1;
-                material.mainTextureScale = scale;
-
-                var rendererComponent = GetComponent<Renderer>();
-                rendererComponent.material = material;
-            }
+            var rendererComponent = GetComponent<Renderer>();
+            rendererComponent.material = material;
             
             basisTexture.Dispose();
         }
-        
-
     }
     
     protected async Task<byte[]> LoadFromStreamingAssets(string filename) {
