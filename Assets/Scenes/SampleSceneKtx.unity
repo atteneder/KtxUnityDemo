@@ -152,7 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: dachstein.ktx
+  filePath: dachstein.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 1
 --- !u!23 &358970342
 MeshRenderer:
@@ -246,7 +249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: trout_mip.ktx
+  filePath: trout_mip.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &455537672
 MeshRenderer:
@@ -340,7 +346,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: dachstein.ktx
+  filePath: dachstein.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &685750964
 MeshRenderer:
@@ -434,7 +443,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: normal.ktx
+  filePath: normal.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 1
 --- !u!23 &686073847
 MeshRenderer:
@@ -528,7 +540,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: alpha_mip.ktx
+  filePath: alpha_mip.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &767584099
 MeshRenderer:
@@ -622,7 +637,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: dachstein_mip.ktx
+  filePath: dachstein_mip.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &825639292
 MeshRenderer:
@@ -790,7 +808,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: trout_yflip.ktx
+  filePath: trout_yflip.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &1097763582
 MeshRenderer:
@@ -884,7 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adbfdba84e02442afa4405dbe3c9368d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: http://10.2.2.51:9000/dachstein.ktx
+  url: http://10.2.2.51:9000/dachstein.ktx2
 --- !u!23 &1175784550
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -977,7 +998,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: trout.ktx
+  filePath: trout.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &1340793419
 MeshRenderer:
@@ -1054,6 +1078,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.046910018
       objectReference: {fileID: 0}
@@ -1069,6 +1098,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -1081,16 +1115,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}
@@ -1140,7 +1164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: alpha.ktx
+  filePath: alpha.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &1441608717
 MeshRenderer:
@@ -1234,7 +1261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: normal.ktx
+  filePath: normal.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &1459978679
 MeshRenderer:
@@ -1328,7 +1358,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: normal_mip.ktx
+  filePath: normal_mip.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &1530025723
 MeshRenderer:
@@ -1422,7 +1455,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: alpha.ktx
+  filePath: alpha.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 1
 --- !u!23 &1870719860
 MeshRenderer:
@@ -1516,7 +1552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adbfdba84e02442afa4405dbe3c9368d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: http://10.2.2.51:9000/trout.ktx
+  url: http://10.2.2.51:9000/trout.ktx2
 --- !u!23 &1886793335
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1609,7 +1645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adbfdba84e02442afa4405dbe3c9368d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: http://10.2.2.51:9000/alpha.ktx
+  url: http://10.2.2.51:9000/alpha.ktx2
 --- !u!23 &1912978770
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1702,7 +1738,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: trout.ktx
+  filePath: trout.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 1
 --- !u!23 &1974068275
 MeshRenderer:

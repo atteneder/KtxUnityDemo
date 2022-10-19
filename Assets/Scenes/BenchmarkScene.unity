@@ -225,15 +225,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filePaths:
-  - trout.ktx
-  - alpha.ktx
-  - dachstein.ktx
+  - trout.ktx2
+  - alpha.ktx2
+  - dachstein.ktx2
   - trout.jpg
-  - alpha.png
-  - trout_mip.ktx
-  - alpha_mip.ktx
-  - trout_uastc_mip.ktx
-  - trout_uastcZ_mip.ktx
+  - alpha.png2
+  - trout_mip.ktx2
+  - alpha_mip.ktx2
+  - trout_uastc_mip.ktx2
+  - trout_uastcZ_mip.ktx2
   prefab: {fileID: 7549154262658669201, guid: afc1581a2404e4bb3b8385fa3ca3753f, type: 3}
   width: 300
   height: 100
@@ -266,6 +266,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.046910018
       objectReference: {fileID: 0}
@@ -281,6 +286,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -293,16 +303,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}

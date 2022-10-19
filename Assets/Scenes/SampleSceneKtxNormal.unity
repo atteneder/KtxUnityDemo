@@ -152,7 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: normal_rg.ktx
+  filePath: normal_rg.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &13589376
 MeshRenderer:
@@ -246,7 +249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: normal_mip.ktx
+  filePath: normal_mip.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &62606753
 MeshRenderer:
@@ -414,7 +420,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: normal.ktx
+  filePath: normal.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &1114007336
 MeshRenderer:
@@ -491,6 +500,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.046910018
       objectReference: {fileID: 0}
@@ -506,6 +520,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -518,16 +537,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1863225681570200818, guid: b53a934d2fe7c40c497d155c24d44088,
         type: 3}
@@ -577,7 +586,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: normal_uastcZ_mip.ktx
+  filePath: normal_uastcZ_mip.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &1373130664
 MeshRenderer:
@@ -671,7 +683,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644a87e35ecf4b2ab5709709c78081e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: normal_mip_rg.ktx
+  filePath: normal_mip_rg.ktx2
+  imageIndex: 0
+  faceSlice: 0
+  mipLevel: 0
   linear: 0
 --- !u!23 &1494828333
 MeshRenderer:

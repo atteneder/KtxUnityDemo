@@ -94,7 +94,7 @@ public class FormatTest : MonoBehaviour
                 LoadTextureBasis(file+".basis",f.transcodeFormat,f.format);
             }
             if( GUI.Button( new Rect(aWidth,y,aWidth,buttonHeight),label)) {
-                LoadTextureKtx(file+".ktx",f.transcodeFormat,f.format);
+                LoadTextureKtx(file+".ktx2",f.transcodeFormat,f.format);
             }
             y += buttonHeight + yGap;
         }
