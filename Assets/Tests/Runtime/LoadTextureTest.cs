@@ -12,83 +12,87 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections;
 using KtxUnity;
 using NUnit.Framework;
 using Unity.PerformanceTesting;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.TestTools;
 using Assert = UnityEngine.Assertions.Assert;
+using Object = UnityEngine.Object;
 
 [Category("Performance")]
 public class LoadTextureTest {
     
-    const int k_ImagesPerBatch = 500;
+    const int k_ImagesPerBatch = 50;
     
     [UnityTest]
     [Performance]
     public IEnumerator Ktx() {
-        yield return PreLoadBuffer("trout.ktx2");
-        // Warmup
-        yield return LoadTextureInternal(3);
-        using (Measure.Scope())
-        {
-            yield return LoadTextureInternal(k_ImagesPerBatch);
-        }
-        Cleanup();
+        yield return Generic("trout.ktx2");
+    }
+
+    [UnityTest]
+    [Performance]
+    public IEnumerator Jpg() {
+        yield return Generic("trout.jpg");
     }
 
     [UnityTest]
     [Performance]
     public IEnumerator KtxFrames() {
-        yield return PreLoadBuffer("trout.ktx2");
-        using (Measure.Frames()
-                   .WarmupCount(1)
-                   .MeasurementCount(10)
-                   .Scope()
-              )
-        {
-            yield return LoadTextureInternal(k_ImagesPerBatch);
-        }
-        Cleanup();
+        yield return GenericFrames("trout.ktx2");
     }
     
     [UnityTest]
     [Performance]
-    public IEnumerator Jpg() {
-        yield return PreLoadBuffer("trout.jpg");
+    public IEnumerator JpgFrames() {
+        yield return GenericFrames("trout.jpg");
+    }
+
+    IEnumerator Generic(string filePath) {
+        yield return PreLoadBuffer(filePath);
+        var memorySampleGroup = new SampleGroup("TotalAllocatedMemory", SampleUnit.Megabyte);
         // Warmup
         yield return LoadTextureInternal(3);
         using (Measure.Scope())
         {
             yield return LoadTextureInternal(k_ImagesPerBatch);
+            var allocatedMemory = Profiler.GetTotalAllocatedMemoryLong() / 1048576f;
+            Measure.Custom(memorySampleGroup, allocatedMemory);
         }
         Cleanup();
     }
-
-    [UnityTest]
-    [Performance]
-    public IEnumerator JpgFrames() {
-        yield return PreLoadBuffer("trout.jpg");
+    
+    IEnumerator GenericFrames(string filePath) {
+        yield return PreLoadBuffer(filePath);
+        var allocated = new SampleGroup("TotalAllocatedMemory", SampleUnit.Megabyte);
+        var reserved = new SampleGroup("TotalReservedMemory", SampleUnit.Megabyte);
         using (Measure.Frames()
                    .WarmupCount(1)
                    .MeasurementCount(10)
                    .Scope()
               )
         {
-            yield return LoadTextureInternal(k_ImagesPerBatch);
+            yield return LoadTextureInternal(k_ImagesPerBatch,allocated,reserved);
         }
         Cleanup();
     }
-
-    IEnumerator LoadTextureInternal(int count) {
+    
+    IEnumerator LoadTextureInternal(int count, SampleGroup allocated = null, SampleGroup reserved = null) {
         var actualCount = 0;
+        var resources = new Texture2D[count];
         
-        m_Benchmark.OnTextureLoaded += result => {
+        void OnTextureLoaded(TextureResult result) {
             Assert.AreEqual( ErrorCode.Success,result.errorCode);
             Assert.IsNotNull(result.texture);
+            resources[actualCount] = result.texture;
             actualCount++;
         };
+
+        m_Benchmark.OnTextureLoaded += OnTextureLoaded;
         
         var task = m_Benchmark.LoadBatch(count);
 
@@ -96,7 +100,22 @@ public class LoadTextureTest {
             yield return null;
         }
         
+        m_Benchmark.OnTextureLoaded -= OnTextureLoaded;
+        
         Assert.AreEqual(count, actualCount);
+
+        if (allocated != null) {
+            Measure.Custom(allocated, Profiler.GetTotalAllocatedMemoryLong() / 1048576f);
+        }
+
+        if (reserved != null) {
+            Measure.Custom(reserved, Profiler.GetTotalReservedMemoryLong() / 1048576f);
+        }
+        
+        foreach (var resource in resources) {
+            Object.Destroy(resource);
+        }
+        GC.Collect();
     }
     
     ManagedNativeArray m_BufferWrapped;
