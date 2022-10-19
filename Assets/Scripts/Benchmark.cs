@@ -37,9 +37,6 @@ public class Benchmark : IDisposable
     ManagedNativeArray m_Data;
     ImageType m_CurrentType = ImageType.None;
 
-    float m_StartTime;
-    float m_BatchTime = -1;
-
     CancellationTokenSource m_CancellationTokenSource;
 
     public IEnumerator LoadData(string filePath) {
@@ -67,10 +64,9 @@ public class Benchmark : IDisposable
         m_Data = new ManagedNativeArray(m_DataArray);
     }
 
-    public async Task LoadBatch(int count) {
+    public async Task<float> LoadBatch(int count) {
         Profiler.BeginSample("LoadBatch");
-        m_StartTime = Time.realtimeSinceStartup;
-        m_BatchTime = -1;
+        var startTime = Time.realtimeSinceStartup;
         if (m_CurrentType == ImageType.Ktx) {
             var tasks = new Task[count];
             for (var i = 0; i < count; i++) {
@@ -89,8 +85,7 @@ public class Benchmark : IDisposable
             Profiler.EndSample();
         }
         
-        m_BatchTime = Time.realtimeSinceStartup-m_StartTime;
-        Debug.LogFormat("Batch load time: {0}", m_BatchTime);
+        return Time.realtimeSinceStartup-startTime;
     }
 
     async Task LoadAndApply(TextureBase ktx) {
@@ -104,7 +99,6 @@ public class Benchmark : IDisposable
     }
 
     async void NeverEndingStoryLoop() {
-        m_StartTime = Time.realtimeSinceStartup;
         if(m_CurrentType==ImageType.Ktx) {
             while(!m_CancellationTokenSource.IsCancellationRequested)
             {
@@ -112,7 +106,6 @@ public class Benchmark : IDisposable
                 var result = await bt.LoadFromBytes(m_Data.nativeArray);
                 if (m_CancellationTokenSource.IsCancellationRequested) break;
                 OnTextureLoaded?.Invoke(result);
-                m_BatchTime = Time.realtimeSinceStartup-m_StartTime;
                 await Task.Yield();
             }
         } else {
@@ -122,7 +115,6 @@ public class Benchmark : IDisposable
                 texture.LoadImage(m_DataArray,true);
                 if (m_CancellationTokenSource.IsCancellationRequested) break;
                 OnTextureLoaded?.Invoke(new TextureResult(texture,TextureOrientation.UNITY_DEFAULT));
-                m_BatchTime = Time.realtimeSinceStartup-m_StartTime;
                 await Task.Yield();
             }
         }
