@@ -14,37 +14,41 @@
 
 using System;
 using System.Collections;
+using NUnit.Framework;
+using Unity.PerformanceTesting;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class LoadTextureTest {
+[Category("Performance")]
+public class PerformanceTest {
 
     Benchmark m_Benchmark;
     
     [UnityTest]
-    [TextureTestCase("*.ktx2")]
-    public IEnumerator Ktx(string filePath) {
-        yield return GenericFrames(filePath);
+    [Performance]
+    [TextureTestCase("colorgrid-8k*", "Performance")]
+    public IEnumerator ColorGrid8K(string filePath) {
+        yield return GenericFrames(filePath, 10);
     }
     
-    [UnityTest]
-    [TextureTestCase("*.jpg")]
-    public IEnumerator Jpg(string filePath) {
-        yield return GenericFrames(filePath);
-    }
-    
-    [UnityTest]
-    [TextureTestCase("*.png")]
-    public IEnumerator Png(string filePath) {
-        yield return GenericFrames(filePath);
-    }
-    
-    IEnumerator GenericFrames(string filePath) {
+    IEnumerator GenericFrames(string filePath, int count) {
         yield return PreLoadBuffer(filePath);
-        yield return TestHelper.LoadTextureInternal(m_Benchmark,1);
+        var time = new SampleGroup("TextureLoadTime");
+        var allocated = new SampleGroup("TotalAllocatedMemory", SampleUnit.Megabyte);
+        var reserved = new SampleGroup("TotalReservedMemory", SampleUnit.Megabyte);
+        using (Measure.Frames()
+                   .ProfilerMarkers("LoadBatch", "CreateTexture")
+                   .DontRecordFrametime()
+                   .WarmupCount(1)
+                   .MeasurementCount(10)
+                   .Scope()
+              )
+        {
+            yield return TestHelper.LoadTextureInternal(m_Benchmark, count, time, allocated, reserved);
+        }
         Cleanup();
     }
-    
+
     IEnumerator PreLoadBuffer(string filePath)
     {
         m_Benchmark = new Benchmark();
