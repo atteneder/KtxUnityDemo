@@ -26,7 +26,11 @@ using Object = UnityEngine.Object;
 [Category("Performance")]
 public class LoadTextureTest {
     
+#if UNITY_EDITOR
     const int k_ImagesPerBatch = 50;
+#else
+    const int k_ImagesPerBatch = 500;
+#endif
     
     [UnityTest]
     [Performance]
@@ -54,34 +58,37 @@ public class LoadTextureTest {
 
     IEnumerator Generic(string filePath) {
         yield return PreLoadBuffer(filePath);
-        var memorySampleGroup = new SampleGroup("TotalAllocatedMemory", SampleUnit.Megabyte);
+        var time = new SampleGroup("TextureLoadTime");
+        var allocated = new SampleGroup("TotalAllocatedMemory", SampleUnit.Megabyte);
+        var reserved = new SampleGroup("TotalReservedMemory", SampleUnit.Megabyte);
         // Warmup
         yield return LoadTextureInternal(3);
         using (Measure.Scope())
         {
-            yield return LoadTextureInternal(k_ImagesPerBatch);
-            var allocatedMemory = Profiler.GetTotalAllocatedMemoryLong() / 1048576f;
-            Measure.Custom(memorySampleGroup, allocatedMemory);
+            yield return LoadTextureInternal(k_ImagesPerBatch,time,allocated,reserved);
         }
         Cleanup();
     }
     
     IEnumerator GenericFrames(string filePath) {
         yield return PreLoadBuffer(filePath);
+        var time = new SampleGroup("TextureLoadTime");
         var allocated = new SampleGroup("TotalAllocatedMemory", SampleUnit.Megabyte);
         var reserved = new SampleGroup("TotalReservedMemory", SampleUnit.Megabyte);
         using (Measure.Frames()
+                   .ProfilerMarkers("LoadBatch", "CreateTexture")
+                   .DontRecordFrametime()
                    .WarmupCount(1)
                    .MeasurementCount(10)
                    .Scope()
               )
         {
-            yield return LoadTextureInternal(k_ImagesPerBatch,allocated,reserved);
+            yield return LoadTextureInternal(k_ImagesPerBatch,time, allocated,reserved);
         }
         Cleanup();
     }
     
-    IEnumerator LoadTextureInternal(int count, SampleGroup allocated = null, SampleGroup reserved = null) {
+    IEnumerator LoadTextureInternal(int count, SampleGroup time = null, SampleGroup allocated = null, SampleGroup reserved = null) {
         var actualCount = 0;
         var resources = new Texture2D[count];
         
@@ -98,6 +105,10 @@ public class LoadTextureTest {
 
         while (!task.IsCompleted) {
             yield return null;
+        }
+
+        if (time != null) {
+            Measure.Custom(time,task.Result*1000);
         }
         
         m_Benchmark.OnTextureLoaded -= OnTextureLoaded;
