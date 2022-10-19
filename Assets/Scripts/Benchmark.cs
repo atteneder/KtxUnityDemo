@@ -64,7 +64,7 @@ public class Benchmark : IDisposable
         m_Data = new ManagedNativeArray(m_DataArray);
     }
 
-    public async Task<float> LoadBatch(int count) {
+    public async Task<float> LoadBatch(int count, bool alpha = false, bool mipmaps = false) {
         Profiler.BeginSample("LoadBatch");
         var startTime = Time.realtimeSinceStartup;
         if (m_CurrentType == ImageType.Ktx) {
@@ -78,7 +78,11 @@ public class Benchmark : IDisposable
         }
         else {
             for (var i = 0; i < count; i++) {
-                var texture = new Texture2D(2, 2);
+                var texture = new Texture2D(
+                    2, 2,
+                    alpha ? TextureFormat.RGBA32 : TextureFormat.RGB24,
+                    mipmaps
+                    );
                 texture.LoadImage(m_DataArray, true);
                 OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
             }
@@ -111,7 +115,7 @@ public class Benchmark : IDisposable
         } else {
             while(!m_CancellationTokenSource.IsCancellationRequested)
             {
-                var texture = new Texture2D(2,2);
+                var texture = new Texture2D(2,2, TextureFormat.RGB24, false);
                 texture.LoadImage(m_DataArray,true);
                 if (m_CancellationTokenSource.IsCancellationRequested) break;
                 OnTextureLoaded?.Invoke(new TextureResult(texture,TextureOrientation.UNITY_DEFAULT));

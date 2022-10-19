@@ -41,30 +41,14 @@ public class TextureTestCaseAttribute : UnityEngine.TestTools.UnityTestAttribute
             var directoryInfo = new DirectoryInfo(folder);
             var files = directoryInfo.GetFiles(m_SearchPattern);
             foreach (var fileInfo in files) {
-
-                if (!fileInfo.Name.EndsWith(".ktx2")
-                    && !fileInfo.Name.EndsWith(".jpg")
-                    && !fileInfo.Name.EndsWith(".png")
-                    ) 
-                {
+                var isJpgPng = fileInfo.Name.EndsWith(".jpg") || fileInfo.Name.EndsWith(".png");
+                if (!fileInfo.Name.EndsWith(".ktx2") && !isJpgPng) {
                     continue;
                 }
-                
-                var data = new TestCaseData(new object[] { fileInfo.FullName });
-
-                var name = fileInfo.Name;
-
-                data.SetName(name);
-                data.ExpectedResult = new UnityEngine.Object();
-                data.HasExpectedResult = true;
-                
-                var test = m_Builder.BuildTestMethod(method, suite, data);
-                if (test.parms != null)
-                    test.parms.HasExpectedResult = false;
-
-                test.Name = name;
-
-                results.Add(test);
+                results.Add(CreateTestCase(method, suite, false, fileInfo));
+                if (isJpgPng) {
+                    results.Add(CreateTestCase(method, suite, true, fileInfo));
+                }
             }
         }
         catch (Exception ex) {
@@ -75,5 +59,23 @@ public class TextureTestCaseAttribute : UnityEngine.TestTools.UnityTestAttribute
 
         Console.WriteLine("Generated {0} test cases.", results.Count);
         return results;
+    }
+
+    TestMethod CreateTestCase(IMethodInfo method, Test suite, bool mipmap, FileSystemInfo fileInfo) {
+        var data = new TestCaseData(new object[] {
+            m_SubFolder == null ? fileInfo.Name : $"{m_SubFolder}/{fileInfo.Name}",
+            mipmap
+        });
+        var name = mipmap ? $"{fileInfo.Name}-mipmap" : fileInfo.Name;
+        data.SetName(name);
+        data.ExpectedResult = new UnityEngine.Object();
+        data.HasExpectedResult = true;
+
+        var test = m_Builder.BuildTestMethod(method, suite, data);
+        if (test.parms != null)
+            test.parms.HasExpectedResult = false;
+
+        test.Name = name;
+        return test;
     }
 }

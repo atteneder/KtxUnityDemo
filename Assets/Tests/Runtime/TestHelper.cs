@@ -26,6 +26,8 @@ static class TestHelper {
     internal static IEnumerator LoadTextureInternal(
         Benchmark benchmark,
         int count,
+        bool alpha = false,
+        bool mipmap = false,
         SampleGroup time = null,
         SampleGroup allocated = null,
         SampleGroup reserved = null
@@ -43,7 +45,7 @@ static class TestHelper {
 
         benchmark.OnTextureLoaded += OnTextureLoaded;
         
-        var task = benchmark.LoadBatch(count);
+        var task = benchmark.LoadBatch(count,alpha,mipmap);
 
         while (!task.IsCompleted) {
             yield return null;

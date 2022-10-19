@@ -23,25 +23,25 @@ public class LoadTextureTest {
     
     [UnityTest]
     [TextureTestCase("*.ktx2")]
-    public IEnumerator Ktx(string filePath) {
-        yield return GenericFrames(filePath);
+    public IEnumerator Ktx(string filePath, bool mipmap) {
+        yield return GenericFrames(filePath, mipmap: mipmap);
     }
     
     [UnityTest]
     [TextureTestCase("*.jpg")]
-    public IEnumerator Jpg(string filePath) {
-        yield return GenericFrames(filePath);
+    public IEnumerator Jpg(string filePath, bool mipmap) {
+        yield return GenericFrames(filePath, mipmap: mipmap);
     }
     
     [UnityTest]
     [TextureTestCase("*.png")]
-    public IEnumerator Png(string filePath) {
-        yield return GenericFrames(filePath);
+    public IEnumerator Png(string filePath, bool mipmap) {
+        yield return GenericFrames(filePath, true, mipmap);
     }
     
-    IEnumerator GenericFrames(string filePath) {
+    IEnumerator GenericFrames(string filePath, bool alpha = false, bool mipmap = false) {
         yield return PreLoadBuffer(filePath);
-        yield return TestHelper.LoadTextureInternal(m_Benchmark,1);
+        yield return TestHelper.LoadTextureInternal(m_Benchmark,1, alpha, mipmap);
         Cleanup();
     }
     

@@ -27,11 +27,16 @@ public class PerformanceTest {
     [UnityTest]
     [Performance]
     [TextureTestCase("colorgrid-8k*", "Performance")]
-    public IEnumerator ColorGrid8K(string filePath) {
-        yield return GenericFrames(filePath, 10);
+    public IEnumerator ColorGrid8K(string filePath, bool mipmap) {
+        yield return GenericFrames(filePath, 10, false, mipmap);
     }
     
-    IEnumerator GenericFrames(string filePath, int count) {
+    IEnumerator GenericFrames(
+        string filePath,
+        int count,
+        bool alpha = false,
+        bool mipmap = false
+        ) {
         yield return PreLoadBuffer(filePath);
         var time = new SampleGroup("TextureLoadTime");
         var allocated = new SampleGroup("TotalAllocatedMemory", SampleUnit.Megabyte);
@@ -44,7 +49,7 @@ public class PerformanceTest {
                    .Scope()
               )
         {
-            yield return TestHelper.LoadTextureInternal(m_Benchmark, count, time, allocated, reserved);
+            yield return TestHelper.LoadTextureInternal(m_Benchmark, count, alpha, mipmap, time, allocated, reserved);
         }
         Cleanup();
     }
