@@ -83,7 +83,7 @@ public class Benchmark : IDisposable
         else {
             for (var i = 0; i < count; i++) {
                 var texture = new Texture2D(2, 2);
-                texture.LoadImage(m_Data.nativeArray.ToArray(), true);
+                texture.LoadImage(m_DataArray, true);
                 OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
             }
             Profiler.EndSample();
