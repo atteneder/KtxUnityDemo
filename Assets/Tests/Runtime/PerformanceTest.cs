@@ -39,8 +39,6 @@ public class PerformanceTest {
         ) {
         yield return PreLoadBuffer(filePath);
         var time = new SampleGroup("TextureLoadTime");
-        var allocated = new SampleGroup("TotalAllocatedMemory", SampleUnit.Megabyte);
-        var reserved = new SampleGroup("TotalReservedMemory", SampleUnit.Megabyte);
         using (Measure.Frames()
                    .ProfilerMarkers("LoadBatch", "CreateTexture")
                    .DontRecordFrametime()
@@ -49,7 +47,7 @@ public class PerformanceTest {
                    .Scope()
               )
         {
-            yield return TestHelper.LoadTextureInternal(m_Benchmark, count, alpha, mipmap, time, allocated, reserved);
+            yield return TestHelper.LoadTextureInternal(m_Benchmark, count, alpha, mipmap, time);
         }
         Cleanup();
     }
