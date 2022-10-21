@@ -27,6 +27,9 @@ public class PerformanceTest {
 #else
     const int k_CountBase = 3;
 #endif
+
+    const int k_Factor1K = 64; // 8k texture has 64 times the area of 1k texture
+    const int k_Factor64 = 16384; // 8k texture has 64 times the area of 64x64 texture
     
     Benchmark m_Benchmark;
     
@@ -37,27 +40,27 @@ public class PerformanceTest {
     
     [UnityTest,Performance,TextureTestCase("colorgrid-1k*", "Performance")]
     public IEnumerator ColorGrid1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, 50*k_CountBase, false, mipmap);
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap);
     }
     
     [UnityTest,Performance,TextureTestCase("colorgrid-64*", "Performance")]
     public IEnumerator ColorGrid64(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, 12800*k_CountBase, false, mipmap);
+        yield return GenericFrames(filePath, k_Factor64*k_CountBase, false, mipmap);
     }
     
     [UnityTest,Performance,TextureTestCase("singlecolor-1k*", "Performance")]
     public IEnumerator SingleColor1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, 50*k_CountBase, false, mipmap);
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap);
     }
     
     [UnityTest,Performance,TextureTestCase("noise-rgb-1k*", "Performance")]
     public IEnumerator NoiseRgb1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, false, mipmap);
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap);
     }
     
     [UnityTest,Performance,TextureTestCase("noise-rgba-1k*", "Performance")]
     public IEnumerator NoiseRgba1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap);
     }
     
     [UnityTest,Performance,TextureTestCase("noise-rgb-8k*", "Performance")]
@@ -77,7 +80,7 @@ public class PerformanceTest {
     
     [UnityTest,Performance,TextureTestCase("normal-noise*1k*", "Performance")]
     public IEnumerator NormalNoise1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap);
     }
     
     [UnityTest,Performance,TextureTestCase("normal-smooth*8k*", "Performance")]
@@ -87,7 +90,7 @@ public class PerformanceTest {
     
     [UnityTest,Performance,TextureTestCase("normal-smooth*1k*", "Performance")]
     public IEnumerator NormalSmooth1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+        yield return GenericFrames(filePath,k_Factor1K*k_CountBase, true, mipmap);
     }
 
     [UnityTest,Performance,TextureTestCase("vector-rgb-8k*", "Performance")]
@@ -97,7 +100,7 @@ public class PerformanceTest {
     
     [UnityTest,Performance,TextureTestCase("vector-rgb-1k*", "Performance")]
     public IEnumerator VectorRgb1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap);
     }
     
     [UnityTest,Performance,TextureTestCase("vector-rgba-8k*", "Performance")]
@@ -107,7 +110,7 @@ public class PerformanceTest {
     
     [UnityTest,Performance,TextureTestCase("vector-rgba-1k*", "Performance")]
     public IEnumerator VectorRgba1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap);
     }
     
     IEnumerator GenericFrames(
