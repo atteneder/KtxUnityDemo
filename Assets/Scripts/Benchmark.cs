@@ -64,8 +64,7 @@ public class Benchmark : IDisposable
         m_Data = new ManagedNativeArray(m_DataArray);
     }
 
-    public async Task<float> LoadBatch(int count, bool alpha = false, bool mipmaps = false) {
-        Profiler.BeginSample("LoadBatch");
+    public async Task<float> LoadBatch(int count, bool alpha = false, bool mipmaps = false, bool imageSharp = false) {
         var startTime = Time.realtimeSinceStartup;
         if (currentType == ImageType.Ktx) {
             var tasks = new Task[count];
@@ -73,7 +72,6 @@ public class Benchmark : IDisposable
                 var bt = new KtxTexture();
                 tasks[i] = LoadAndApply(bt);
             }
-            Profiler.EndSample();
             await Task.WhenAll(tasks);
         }
         else {
@@ -86,7 +84,6 @@ public class Benchmark : IDisposable
                 texture.LoadImage(m_DataArray, true);
                 OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
             }
-            Profiler.EndSample();
         }
         
         return Time.realtimeSinceStartup-startTime;
