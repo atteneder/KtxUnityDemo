@@ -118,12 +118,17 @@ public class PerformanceTest {
         ) {
         yield return PreLoadBuffer(filePath);
         var time = new SampleGroup("TextureLoadTime");
+#if UNITY_EDITOR
+        // Textures are only readable in the Editor
+        var textureSize = new SampleGroup("TextureSize", SampleUnit.Byte);
+        yield return TestHelper.GetTextureSize(m_Benchmark, textureSize, alpha, mipmap);
+#endif
         using (Measure.Frames()
                    .ProfilerMarkers("LoadBatch", "CreateTexture")
                    .DontRecordFrametime()
                    .WarmupCount(1)
                    .MeasurementCount(10)
-                   .Scope()
+                   .Scope(time)
               )
         {
             yield return TestHelper.LoadTextureInternal(m_Benchmark, count, alpha, mipmap, time);

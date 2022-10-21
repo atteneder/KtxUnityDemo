@@ -70,6 +70,32 @@ static class TestHelper {
         foreach (var resource in resources) {
             Object.Destroy(resource);
         }
-        GC.Collect();
+    }
+    
+    internal static IEnumerator GetTextureSize(
+        Benchmark benchmark,
+        SampleGroup sizeGroup,
+        bool alpha = false,
+        bool mipmap = false
+        )
+    {
+        void OnTextureLoaded(TextureResult result) {
+            Assert.AreEqual( ErrorCode.Success,result.errorCode);
+            Assert.IsNotNull(result.texture);
+            if (result.texture.isReadable) {
+                var bytes = result.texture.GetRawTextureData();
+                Measure.Custom(sizeGroup,bytes.Length);
+            }
+        }
+
+        benchmark.OnTextureLoaded += OnTextureLoaded;
+        
+        var task = benchmark.LoadBatch(1,alpha,mipmap);
+
+        while (!task.IsCompleted) {
+            yield return null;
+        }
+
+        benchmark.OnTextureLoaded -= OnTextureLoaded;
     }
 }
