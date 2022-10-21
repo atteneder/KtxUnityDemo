@@ -100,7 +100,8 @@ public class BenchmarkUI : MonoBehaviour
     }
 
     async void LoadBatch(int count) {
-        var batchTime = await m_Benchmark.LoadBatch(count);
+        var alpha = m_Benchmark.currentType == ImageType.PNG;
+        var batchTime = await m_Benchmark.LoadBatch(count, alpha: alpha);
         Debug.LogFormat("Batch load time: {0}", batchTime);
     }
 
