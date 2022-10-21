@@ -23,7 +23,7 @@ using KtxUnity;
 
 public class Benchmark : IDisposable
 {
-    internal enum ImageType {
+    public enum ImageType {
         None,
         Ktx,
         PNG,
@@ -35,17 +35,17 @@ public class Benchmark : IDisposable
 
     byte[] m_DataArray;
     ManagedNativeArray m_Data;
-    ImageType m_CurrentType = ImageType.None;
+    public ImageType currentType = ImageType.None;
 
     CancellationTokenSource m_CancellationTokenSource;
 
     public IEnumerator LoadData(string filePath) {
         if(filePath.EndsWith(".ktx2")) {
-            m_CurrentType = ImageType.Ktx;
+            currentType = ImageType.Ktx;
         } else if(filePath.EndsWith(".png")) {
-            m_CurrentType = ImageType.PNG;
+            currentType = ImageType.PNG;
         } else if(filePath.EndsWith(".jpg")) {
-            m_CurrentType = ImageType.JPG;
+            currentType = ImageType.JPG;
         } else {
             Debug.LogError("Unknown image type");
             yield break;
@@ -67,7 +67,7 @@ public class Benchmark : IDisposable
     public async Task<float> LoadBatch(int count, bool alpha = false, bool mipmaps = false) {
         Profiler.BeginSample("LoadBatch");
         var startTime = Time.realtimeSinceStartup;
-        if (m_CurrentType == ImageType.Ktx) {
+        if (currentType == ImageType.Ktx) {
             var tasks = new Task[count];
             for (var i = 0; i < count; i++) {
                 var bt = new KtxTexture();
@@ -103,7 +103,7 @@ public class Benchmark : IDisposable
     }
 
     async void NeverEndingStoryLoop() {
-        if(m_CurrentType==ImageType.Ktx) {
+        if(currentType==ImageType.Ktx) {
             while(!m_CancellationTokenSource.IsCancellationRequested)
             {
                 var bt = new KtxTexture();
