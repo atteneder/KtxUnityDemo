@@ -5,10 +5,12 @@
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
+    "precompiledReferences": [
+        "SixLabors.ImageSharp.dll",
+        "System.Memory.dll"
+    ],
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

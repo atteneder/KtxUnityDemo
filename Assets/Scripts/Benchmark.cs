@@ -14,12 +14,16 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Networking;
 using KtxUnity;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.PixelFormats;
 
 public class Benchmark : IDisposable
 {
@@ -75,18 +79,80 @@ public class Benchmark : IDisposable
             await Task.WhenAll(tasks);
         }
         else {
-            for (var i = 0; i < count; i++) {
-                var texture = new Texture2D(
-                    2, 2,
-                    alpha ? TextureFormat.RGBA32 : TextureFormat.RGB24,
-                    mipmaps
-                    );
-                texture.LoadImage(m_DataArray, true);
-                OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
+            if (imageSharp) {
+                var tasks = new List<Task<Texture2D>>(count);
+                for (var i = 0; i < count; i++) {
+                    tasks.Add(LoadTextureImageSharp(alpha, mipmaps));
+                }
+                while (tasks.Count > 0) {
+                    var task = await Task.WhenAny(tasks);
+                    tasks.Remove(task);
+                    var texture = await task;
+                    OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
+                }
+            } else {
+                for (var i = 0; i < count; i++) {
+                    Texture2D texture;
+                    texture = LoadTextureImageConversion(alpha, mipmaps);
+                    OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
+                }
             }
         }
         
         return Time.realtimeSinceStartup-startTime;
+    }
+
+    Texture2D LoadTextureImageConversion(bool alpha, bool mipmaps) {
+        Profiler.BeginSample("LoadTextureImageConversion");
+        var texture = new Texture2D(
+            2, 2,
+            alpha ? TextureFormat.RGBA32 : TextureFormat.RGB24,
+            mipmaps
+        );
+        texture.LoadImage(m_DataArray, true);
+        Profiler.EndSample();
+        return texture;
+    }
+    
+    async Task<Texture2D> LoadTextureImageSharp(bool alpha, bool mipmap) {
+        var image = await Task.Run( () => ImageSharpLoadWrapper(m_DataArray,alpha));
+        // var image = ImageSharpLoadWrapper(m_DataArray, alpha);
+        return alpha ? ImageSharpWrapper((Image<Rgba32>)image, alpha, mipmap) : ImageSharpWrapper((Image<Rgb24>)image, alpha, mipmap);
+    }
+
+    Image ImageSharpLoadWrapper(byte[] data, bool alpha) {
+        Profiler.BeginSample("ImageSharp");
+        if (alpha) {
+            var result = Image.Load(data);
+            Profiler.EndSample();
+            return result;
+        }
+        else {
+            var result = Image.Load<Rgb24>(data);
+            Profiler.EndSample();
+            return result;
+        }
+    }
+
+    static unsafe Texture2D ImageSharpWrapper<TPixel>(Image<TPixel> image, bool alpha, bool mipmap) where TPixel : unmanaged, IPixel<TPixel> {
+        if (image.TryGetSinglePixelSpan(out var fullBuffer)) {
+            Profiler.BeginSample("LoadRawTextureData");
+            var texture = new Texture2D(
+                image.Width, image.Height,
+                alpha ? TextureFormat.RGBA32 : TextureFormat.RGB24,
+                mipmap
+            );
+
+            var size = fullBuffer.Length * (alpha?4:3);
+            fixed (void* sourcePtr = fullBuffer) {
+                texture.LoadRawTextureData((IntPtr)sourcePtr, size);
+                texture.Apply(false, true);
+            }
+            Profiler.EndSample();
+            return texture;
+        }
+
+        return null;
     }
 
     async Task LoadAndApply(TextureBase ktx) {

@@ -45,9 +45,11 @@ public class TextureTestCaseAttribute : UnityEngine.TestTools.UnityTestAttribute
                 if (!fileInfo.Name.EndsWith(".ktx2") && !isJpgPng) {
                     continue;
                 }
-                results.Add(CreateTestCase(method, suite, false, fileInfo));
+                results.Add(CreateTestCase(method, suite, false, false, fileInfo));
                 if (isJpgPng) {
-                    results.Add(CreateTestCase(method, suite, true, fileInfo));
+                    results.Add(CreateTestCase(method, suite, true, false, fileInfo));
+                    results.Add(CreateTestCase(method, suite, false, true, fileInfo));
+                    // results.Add(CreateTestCase(method, suite, true, true, fileInfo));
                 }
             }
         }
@@ -61,12 +63,23 @@ public class TextureTestCaseAttribute : UnityEngine.TestTools.UnityTestAttribute
         return results;
     }
 
-    TestMethod CreateTestCase(IMethodInfo method, Test suite, bool mipmap, FileSystemInfo fileInfo) {
+    TestMethod CreateTestCase(
+        IMethodInfo method,
+        Test suite,
+        bool mipmap,
+        bool imageSharp,
+        FileSystemInfo fileInfo
+        )
+    {
         var data = new TestCaseData(new object[] {
             m_SubFolder == null ? fileInfo.Name : $"{m_SubFolder}/{fileInfo.Name}",
-            mipmap
+            mipmap,
+            imageSharp
         });
         var name = mipmap ? $"{fileInfo.Name}-mipmap" : fileInfo.Name;
+        if (imageSharp) {
+            name = $"{name}-isharp";
+        }
         data.SetName(name);
         data.ExpectedResult = new UnityEngine.Object();
         data.HasExpectedResult = true;

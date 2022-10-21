@@ -39,9 +39,9 @@ public class LoadTextureTest {
         yield return GenericFrames(filePath, true, mipmap);
     }
     
-    IEnumerator GenericFrames(string filePath, bool alpha = false, bool mipmap = false) {
+    IEnumerator GenericFrames(string filePath, bool alpha = false, bool mipmap = false, bool imageSharp = true) {
         yield return PreLoadBuffer(filePath);
-        yield return TestHelper.LoadTextureInternal(m_Benchmark,1, alpha, mipmap);
+        yield return TestHelper.LoadTextureInternal(m_Benchmark,1, alpha, mipmap, imageSharp);
         Cleanup();
     }
     

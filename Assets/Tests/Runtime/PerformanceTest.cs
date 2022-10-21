@@ -34,90 +34,91 @@ public class PerformanceTest {
     Benchmark m_Benchmark;
     
     [UnityTest,Performance,TextureTestCase("colorgrid-8k*", "Performance")]
-    public IEnumerator ColorGrid8K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, false, mipmap);
+    public IEnumerator ColorGrid8K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_CountBase, false, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("colorgrid-1k*", "Performance")]
-    public IEnumerator ColorGrid1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap);
+    public IEnumerator ColorGrid1K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("colorgrid-64*", "Performance")]
-    public IEnumerator ColorGrid64(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_Factor64*k_CountBase, false, mipmap);
+    public IEnumerator ColorGrid64(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_Factor64*k_CountBase, false, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("singlecolor-1k*", "Performance")]
-    public IEnumerator SingleColor1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap);
+    public IEnumerator SingleColor1K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("noise-rgb-1k*", "Performance")]
-    public IEnumerator NoiseRgb1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap);
+    public IEnumerator NoiseRgb1K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, false, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("noise-rgba-1k*", "Performance")]
-    public IEnumerator NoiseRgba1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap);
+    public IEnumerator NoiseRgba1K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("noise-rgb-8k*", "Performance")]
-    public IEnumerator NoiseRgb8K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, false, mipmap);
+    public IEnumerator NoiseRgb8K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_CountBase, false, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("noise-rgba-8k*", "Performance")]
-    public IEnumerator NoiseRgba8K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+    public IEnumerator NoiseRgba8K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_CountBase, true, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("normal-noise*8k*", "Performance")]
-    public IEnumerator NormalNoise8K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+    public IEnumerator NormalNoise8K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_CountBase, true, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("normal-noise*1k*", "Performance")]
-    public IEnumerator NormalNoise1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap);
+    public IEnumerator NormalNoise1K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("normal-smooth*8k*", "Performance")]
-    public IEnumerator NormalSmooth8K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+    public IEnumerator NormalSmooth8K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_CountBase, true, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("normal-smooth*1k*", "Performance")]
-    public IEnumerator NormalSmooth1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath,k_Factor1K*k_CountBase, true, mipmap);
+    public IEnumerator NormalSmooth1K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath,k_Factor1K*k_CountBase, true, mipmap, imageSharp);
     }
 
     [UnityTest,Performance,TextureTestCase("vector-rgb-8k*", "Performance")]
-    public IEnumerator VectorRgb8K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+    public IEnumerator VectorRgb8K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_CountBase, true, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("vector-rgb-1k*", "Performance")]
-    public IEnumerator VectorRgb1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap);
+    public IEnumerator VectorRgb1K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("vector-rgba-8k*", "Performance")]
-    public IEnumerator VectorRgba8K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_CountBase, true, mipmap);
+    public IEnumerator VectorRgba8K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_CountBase, true, mipmap, imageSharp);
     }
     
     [UnityTest,Performance,TextureTestCase("vector-rgba-1k*", "Performance")]
-    public IEnumerator VectorRgba1K(string filePath, bool mipmap) {
-        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap);
+    public IEnumerator VectorRgba1K(string filePath, bool mipmap, bool imageSharp = true) {
+        yield return GenericFrames(filePath, k_Factor1K*k_CountBase, true, mipmap, imageSharp);
     }
     
     IEnumerator GenericFrames(
         string filePath,
         int count,
         bool alpha = false,
-        bool mipmap = false
+        bool mipmap = false,
+        bool imageSharp = true
         ) {
         yield return PreLoadBuffer(filePath);
         var time = new SampleGroup("TextureLoadTime");
@@ -134,7 +135,7 @@ public class PerformanceTest {
                    .Scope(time)
               )
         {
-            yield return TestHelper.LoadTextureInternal(m_Benchmark, count, alpha, mipmap, time);
+            yield return TestHelper.LoadTextureInternal(m_Benchmark, count, alpha, mipmap, imageSharp, time);
         }
         Cleanup();
     }

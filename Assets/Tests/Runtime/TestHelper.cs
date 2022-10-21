@@ -28,6 +28,7 @@ static class TestHelper {
         int count,
         bool alpha = false,
         bool mipmap = false,
+        bool imageSharp = true,
         SampleGroup time = null,
         SampleGroup allocated = null,
         SampleGroup reserved = null
@@ -45,7 +46,7 @@ static class TestHelper {
 
         benchmark.OnTextureLoaded += OnTextureLoaded;
         
-        var task = benchmark.LoadBatch(count,alpha,mipmap);
+        var task = benchmark.LoadBatch(count,alpha,mipmap, imageSharp);
 
         while (!task.IsCompleted) {
             yield return null;
