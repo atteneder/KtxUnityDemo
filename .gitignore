@@ -63,10 +63,10 @@ ProjectSettings/RiderScriptEditorPersistedState.asset
 # Unity user specific settings
 UserSettings
 
-Assets/StreamingAssets/*.ktx*
-Assets/StreamingAssets/*.basis*
-Assets/StreamingAssets/*.png*
-Assets/StreamingAssets/*.jpg*
+Assets/StreamingAssets/**/*.ktx*
+Assets/StreamingAssets/**/*.basis*
+Assets/StreamingAssets/**/*.png*
+Assets/StreamingAssets/**/*.jpg*
 
 Assets/Textures/**/*.ktx*
 Assets/Textures/**/*.basis*

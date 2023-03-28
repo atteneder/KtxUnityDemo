@@ -23,7 +23,7 @@ using KtxUnity;
 
 public class Benchmark : IDisposable
 {
-    internal enum ImageType {
+    public enum ImageType {
         None,
         Ktx,
         PNG,
@@ -35,20 +35,17 @@ public class Benchmark : IDisposable
 
     byte[] m_DataArray;
     ManagedNativeArray m_Data;
-    ImageType m_CurrentType = ImageType.None;
-
-    float m_StartTime;
-    float m_BatchTime = -1;
+    public ImageType currentType = ImageType.None;
 
     CancellationTokenSource m_CancellationTokenSource;
 
     public IEnumerator LoadData(string filePath) {
         if(filePath.EndsWith(".ktx2")) {
-            m_CurrentType = ImageType.Ktx;
+            currentType = ImageType.Ktx;
         } else if(filePath.EndsWith(".png")) {
-            m_CurrentType = ImageType.PNG;
+            currentType = ImageType.PNG;
         } else if(filePath.EndsWith(".jpg")) {
-            m_CurrentType = ImageType.JPG;
+            currentType = ImageType.JPG;
         } else {
             Debug.LogError("Unknown image type");
             yield break;
@@ -67,30 +64,29 @@ public class Benchmark : IDisposable
         m_Data = new ManagedNativeArray(m_DataArray);
     }
 
-    public async Task LoadBatch(int count) {
-        Profiler.BeginSample("LoadBatch");
-        m_StartTime = Time.realtimeSinceStartup;
-        m_BatchTime = -1;
-        if (m_CurrentType == ImageType.Ktx) {
+    public async Task<float> LoadBatch(int count, bool alpha = false, bool mipmaps = false, bool imageSharp = false) {
+        var startTime = Time.realtimeSinceStartup;
+        if (currentType == ImageType.Ktx) {
             var tasks = new Task[count];
             for (var i = 0; i < count; i++) {
                 var bt = new KtxTexture();
                 tasks[i] = LoadAndApply(bt);
             }
-            Profiler.EndSample();
             await Task.WhenAll(tasks);
         }
         else {
             for (var i = 0; i < count; i++) {
-                var texture = new Texture2D(2, 2);
-                texture.LoadImage(m_Data.nativeArray.ToArray(), true);
+                var texture = new Texture2D(
+                    2, 2,
+                    alpha ? TextureFormat.RGBA32 : TextureFormat.RGB24,
+                    mipmaps
+                    );
+                texture.LoadImage(m_DataArray, true);
                 OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
             }
-            Profiler.EndSample();
         }
         
-        m_BatchTime = Time.realtimeSinceStartup-m_StartTime;
-        Debug.LogFormat("Batch load time: {0}", m_BatchTime);
+        return Time.realtimeSinceStartup-startTime;
     }
 
     async Task LoadAndApply(TextureBase ktx) {
@@ -104,25 +100,22 @@ public class Benchmark : IDisposable
     }
 
     async void NeverEndingStoryLoop() {
-        m_StartTime = Time.realtimeSinceStartup;
-        if(m_CurrentType==ImageType.Ktx) {
+        if(currentType==ImageType.Ktx) {
             while(!m_CancellationTokenSource.IsCancellationRequested)
             {
                 var bt = new KtxTexture();
                 var result = await bt.LoadFromBytes(m_Data.nativeArray);
                 if (m_CancellationTokenSource.IsCancellationRequested) break;
                 OnTextureLoaded?.Invoke(result);
-                m_BatchTime = Time.realtimeSinceStartup-m_StartTime;
                 await Task.Yield();
             }
         } else {
             while(!m_CancellationTokenSource.IsCancellationRequested)
             {
-                var texture = new Texture2D(2,2);
+                var texture = new Texture2D(2,2, TextureFormat.RGB24, false);
                 texture.LoadImage(m_DataArray,true);
                 if (m_CancellationTokenSource.IsCancellationRequested) break;
                 OnTextureLoaded?.Invoke(new TextureResult(texture,TextureOrientation.UNITY_DEFAULT));
-                m_BatchTime = Time.realtimeSinceStartup-m_StartTime;
                 await Task.Yield();
             }
         }

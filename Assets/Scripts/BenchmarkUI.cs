@@ -35,8 +35,6 @@ public class BenchmarkUI : MonoBehaviour
     ImageType m_CurrentType = ImageType.None;
     int m_TotalCount;
 
-    float m_StartTime;
-
     float m_Spread = 3;
     float m_Step = -.001f;
     float m_Distance = 10;
@@ -102,7 +100,9 @@ public class BenchmarkUI : MonoBehaviour
     }
 
     async void LoadBatch(int count) {
-        await m_Benchmark.LoadBatch(count);
+        var alpha = m_Benchmark.currentType == ImageType.PNG;
+        var batchTime = await m_Benchmark.LoadBatch(count, alpha: alpha);
+        Debug.LogFormat("Batch load time: {0}", batchTime);
     }
 
     void NeverEndingStory() {
