@@ -15,13 +15,18 @@
 using UnityEngine;
 using KtxUnity;
 
-public class TestKtxFileLoader : TextureFileLoader<KtxTestTexture>
+class TestKtxFileLoader : TextureFileLoader<KtxTexture>
 {
-    public KtxTestTexture overrideTexture;
+    public KtxTexture overrideTexture;
 
     protected override async void Start() {
         var result = await LoadFromStreamingAssets(overrideTexture);
-        ApplyTexture(result);
+        if (result.errorCode == ErrorCode.Success) {
+            ApplyTexture(result);
+        }
+        else {
+            Debug.LogError($"Loading KTX failed: {result.errorCode}");
+        }
     }
 
     protected override void ApplyTexture(TextureResult result) {

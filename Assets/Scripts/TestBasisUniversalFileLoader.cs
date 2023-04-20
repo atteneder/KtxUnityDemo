@@ -12,17 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
 using KtxUnity;
-using UnityEngine.UI;
 
-public class TestBasisUniversalFileLoader : TextureFileLoader<BasisUniversalTestTexture>
+class TestBasisUniversalFileLoader : TextureFileLoader<BasisUniversalTexture>
 {
-    public BasisUniversalTestTexture overrideTexture;
+    public BasisUniversalTexture overrideTexture;
 
     protected override async void Start() {
-        var result = await LoadFromStreamingAssets(overrideTexture);
-        ApplyTexture(result);
+        var url = TextureBase.GetStreamingAssetsUrl(filePath);
+        
+        var webRequest = UnityWebRequest.Get(url);
+        var asyncOp = webRequest.SendWebRequest();
+        while (!asyncOp.isDone) {
+            await Task.Yield();
+        }
+
+        if(!string.IsNullOrEmpty(webRequest.error)) {
+#if DEBUG
+            Debug.LogErrorFormat("Error loading {0}: {1}",url,webRequest.error);
+#endif
+            return;
+        }
+
+        var buffer = webRequest.downloadHandler.data;
+            
+        using (var bufferWrapped = new ManagedNativeArray(buffer)) {
+            var result = new TextureResult {
+                errorCode = overrideTexture.Open(bufferWrapped.nativeArray)
+            };
+            if (result.errorCode != ErrorCode.Success) return;
+            result = await overrideTexture.LoadTexture2D(transcodeFormat,layer,faceSlice,mipLevel,mipChain);
+            ApplyTexture(result);
+        }
+        overrideTexture.Dispose();
     }
 
     protected override void ApplyTexture(TextureResult result) {

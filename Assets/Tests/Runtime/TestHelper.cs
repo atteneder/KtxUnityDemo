@@ -35,10 +35,16 @@ static class TestHelper {
     {
         var actualCount = 0;
         var resources = new Texture2D[count];
+        var formatNotSupportedBySystem = false;
+        ErrorCode firstError = ErrorCode.Success;
         
         void OnTextureLoaded(TextureResult result) {
-            Assert.AreEqual( ErrorCode.Success,result.errorCode);
-            Assert.IsNotNull(result.texture);
+            if (result.errorCode == ErrorCode.FormatUnsupportedBySystem) {
+                formatNotSupportedBySystem = true;
+            }
+            if (result.errorCode != ErrorCode.Success) {
+                firstError = result.errorCode;
+            }
             resources[actualCount] = result.texture;
             actualCount++;
         };
@@ -56,8 +62,13 @@ static class TestHelper {
         }
         
         benchmark.OnTextureLoaded -= OnTextureLoaded;
+
+        if (formatNotSupportedBySystem) {
+            NUnit.Framework.Assert.Ignore("Format is not supported by system");
+        }
         
         Assert.AreEqual(count, actualCount);
+        Assert.AreEqual( ErrorCode.Success,firstError);
 
         if (allocated != null) {
             Measure.Custom(allocated, Profiler.GetTotalAllocatedMemoryLong() / 1048576f);
@@ -68,6 +79,7 @@ static class TestHelper {
         }
         
         foreach (var resource in resources) {
+            Assert.IsNotNull(resource);
             Object.Destroy(resource);
         }
     }

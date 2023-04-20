@@ -28,19 +28,11 @@ public class FormatTest : MonoBehaviour
     [SerializeField] float buttonHeight = 70;
     [SerializeField] float yGap = 5;
 
-    List<TranscodeFormatTuple> graphicsFormats;
-    List<KeyValuePair<TextureFormat,TranscodeFormat>> textureFormats;
+    List<GraphicsFormat> graphicsFormats;
 
     string file;
     GameObject currentGo;
     Vector2 scrollPos;
-
-    void Start() {
-        TranscodeFormatHelper.Init();
-#if KTX_VERBOSE
-        TranscodeFormatHelper.GetSupportedTextureFormats ( out graphicsFormats, out textureFormats );
-#endif
-    }
 
     void OnGUI() {
         float barWidth = Screen.width * 0.025f;
@@ -51,10 +43,47 @@ public class FormatTest : MonoBehaviour
             BeginScrollView(ktxFiles.Length,barWidth);
             TextureGUI(barWidth);
         } else {
-            BeginScrollView(graphicsFormats.Count+textureFormats.Count,barWidth);
+            BeginScrollView(graphicsFormats.Count,barWidth);
             FormatGUI(barWidth);
         }
         GUI.EndScrollView();
+    }
+
+    void Start() {
+        // TranscodeFormatHelper.Init();
+#if KTX_VERBOSE
+        // TranscodeFormatHelper.GetSupportedTextureFormats ( out graphicsFormats, out textureFormats );
+#endif
+
+        graphicsFormats = new List<GraphicsFormat>();
+        graphicsFormats.Add(GraphicsFormat.RGBA_DXT1_SRGB);
+        graphicsFormats.Add(GraphicsFormat.RGBA_DXT1_UNorm);
+        graphicsFormats.Add(GraphicsFormat.RGBA_DXT5_SRGB);
+        graphicsFormats.Add(GraphicsFormat.RGBA_DXT5_UNorm);
+        graphicsFormats.Add(GraphicsFormat.RGBA_BC7_SRGB);
+        graphicsFormats.Add(GraphicsFormat.RGBA_BC7_UNorm);
+        graphicsFormats.Add(GraphicsFormat.RGB_ETC2_SRGB);
+        graphicsFormats.Add(GraphicsFormat.RGB_ETC_UNorm);
+        graphicsFormats.Add(GraphicsFormat.RGBA_ETC2_SRGB);
+        graphicsFormats.Add(GraphicsFormat.RGBA_ETC2_UNorm);
+        graphicsFormats.Add(GraphicsFormat.R_EAC_UNorm); // Also supports SNorm
+        graphicsFormats.Add(GraphicsFormat.RG_EAC_UNorm); // Also supports SNorm
+        graphicsFormats.Add(GraphicsFormat.RGB_PVRTC_4Bpp_SRGB);
+        graphicsFormats.Add(GraphicsFormat.RGB_PVRTC_4Bpp_UNorm);
+        graphicsFormats.Add(GraphicsFormat.RGBA_ASTC4X4_SRGB);
+        graphicsFormats.Add(GraphicsFormat.RGBA_ASTC4X4_UNorm);
+        graphicsFormats.Add(GraphicsFormat.RGBA_PVRTC_4Bpp_SRGB);
+        graphicsFormats.Add(GraphicsFormat.RGBA_PVRTC_4Bpp_UNorm);
+        graphicsFormats.Add(GraphicsFormat.R8G8B8_SRGB); // Also supports SNorm, UInt, SInt
+        graphicsFormats.Add(GraphicsFormat.R8G8B8_UNorm); // Also supports SNorm, UInt, SInt
+        graphicsFormats.Add(GraphicsFormat.R8G8B8_UInt); // Also supports SNorm, UInt, SInt
+        graphicsFormats.Add(GraphicsFormat.R8G8B8A8_SRGB); // Also supports SNorm, UInt, SInt
+        graphicsFormats.Add(GraphicsFormat.R8G8B8A8_UNorm); // Also supports SNorm, UInt, SInt
+        graphicsFormats.Add(GraphicsFormat.R8G8B8A8_SNorm); // Also supports SNorm, UInt, SInt
+        graphicsFormats.Add(GraphicsFormat.R8G8B8A8_UInt); // Also supports SNorm, UInt, SInt
+        graphicsFormats.Add(GraphicsFormat.R4G4B4A4_UNormPack16);
+        graphicsFormats.Add(GraphicsFormat.R5G6B5_UNormPack16);
+        graphicsFormats.Add(GraphicsFormat.B5G6R5_UNormPack16);
     }
 
     void BeginScrollView(int count, float barWidth) {
@@ -89,41 +118,39 @@ public class FormatTest : MonoBehaviour
         float aWidth = (buttonWidth-barWidth)/2;
 
         foreach(var f in graphicsFormats) {
-            var label = string.Format("{0}/{1}",f.format,f.transcodeFormat);
+            var label = $"{f}";
             if( GUI.Button( new Rect(0,y,aWidth,buttonHeight),label)) {
-                LoadTextureBasis(file+".basis",f.transcodeFormat,f.format);
+                LoadTextureBasis(file+".basis", f);
             }
             if( GUI.Button( new Rect(aWidth,y,aWidth,buttonHeight),label)) {
-                LoadTextureKtx(file+".ktx2",f.transcodeFormat,f.format);
+                LoadTextureKtx(file+".ktx2", f);
             }
             y += buttonHeight + yGap;
         }
     }
 
-    void LoadTextureBasis(string file, TranscodeFormat transF, GraphicsFormat gf ) {
+    void LoadTextureBasis(string file, GraphicsFormat gf ) {
         if (currentGo!=null) {
             Destroy(currentGo);
         }
-        var txt = new BasisUniversalTestTexture();
-        txt.graphicsFormat = gf;
-        txt.transF = transF;
+        var txt = new BasisUniversalTexture();
 
-        var testLoader = Object.Instantiate<TestBasisUniversalFileLoader>(basisuPrefab);
+        var testLoader = Instantiate(basisuPrefab);
         testLoader.overrideTexture = txt;
+        testLoader.transcodeFormat = gf;
         testLoader.filePath = file;
         currentGo = testLoader.gameObject;
     }
 
-    void LoadTextureKtx(string file, TranscodeFormat transF, GraphicsFormat gf ) {
+    void LoadTextureKtx(string file, GraphicsFormat gf ) {
         if (currentGo!=null) {
             Destroy(currentGo);
         }
-        var txt = new KtxTestTexture();
-        txt.graphicsFormat = gf;
-        txt.transF = transF;
+        var txt = new KtxTexture();
 
-        var testLoader = Object.Instantiate<TestKtxFileLoader>(prefab);
+        var testLoader = Instantiate(prefab);
         testLoader.overrideTexture = txt;
+        testLoader.transcodeFormat = gf;
         testLoader.filePath = file;
         currentGo = testLoader.gameObject;
     }

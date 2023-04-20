@@ -15,7 +15,7 @@
 using UnityEngine;
 using KtxUnity;
 
-public class CustomBasisFileLoader : TextureFileLoader<BasisUniversalTexture>
+class CustomBasisFileLoader : TextureFileLoader<BasisUniversalTexture>
 {
     protected override void ApplyTexture(TextureResult result) {
         var rendererComponent = GetComponent<Renderer>();

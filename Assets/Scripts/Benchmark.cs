@@ -82,7 +82,7 @@ public class Benchmark : IDisposable
                     mipmaps
                     );
                 texture.LoadImage(m_DataArray, true);
-                OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UNITY_DEFAULT));
+                OnTextureLoaded?.Invoke(new TextureResult(texture, TextureOrientation.UnityDefault));
             }
         }
         
@@ -115,7 +115,7 @@ public class Benchmark : IDisposable
                 var texture = new Texture2D(2,2, TextureFormat.RGB24, false);
                 texture.LoadImage(m_DataArray,true);
                 if (m_CancellationTokenSource.IsCancellationRequested) break;
-                OnTextureLoaded?.Invoke(new TextureResult(texture,TextureOrientation.UNITY_DEFAULT));
+                OnTextureLoaded?.Invoke(new TextureResult(texture,TextureOrientation.UnityDefault));
                 await Task.Yield();
             }
         }

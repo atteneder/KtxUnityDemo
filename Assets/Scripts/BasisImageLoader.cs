@@ -17,7 +17,7 @@ using UnityEngine;
 using KtxUnity;
 using UnityEngine.UI;
 
-public class BasisImageLoader : TextureFileLoader<BasisUniversalTexture>
+class BasisImageLoader : TextureFileLoader<BasisUniversalTexture>
 {
 
     [SerializeField]

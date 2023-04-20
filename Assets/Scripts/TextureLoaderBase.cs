@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2019-2022 Andreas Atteneder, All Rights Reserved.
+﻿// Copyright (c) 2019-2023 Andreas Atteneder, All Rights Reserved.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using KtxUnity;
+using UnityEngine;
 
-public class KtxTestTexture : KtxTexture
+ abstract class TextureLoaderBase : MonoBehaviour
 {
-    public GraphicsFormat graphicsFormat;
-    public TranscodeFormat transF;
-
-    protected override TranscodeFormatTuple? GetFormat(
-        IMetaData meta,
-        ILevelInfo li,
-        bool linear = false
-    ) {
-        return new TranscodeFormatTuple(this.graphicsFormat,this.transF);
+    /// <summary>
+    /// Example method for applying a loaded texture.
+    /// </summary>
+    /// <param name="result">Result of loading a texture</param>
+    protected void OnTextureLoaded(TextureResult result) {
+        ApplyTexture(result);
     }
+
+    protected abstract void ApplyTexture(TextureResult result);
 }
