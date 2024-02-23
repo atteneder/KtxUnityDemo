@@ -5,7 +5,7 @@
     "com.unity.ext.nunit": "1.0.6",
     "com.unity.ide.rider": "3.0.27",
     "com.unity.mobile.android-logcat": "1.4.0",
-    "com.unity.package-validation-suite": "0.63.0-preview",
+    "com.unity.package-validation-suite": "0.67.0-preview",
     "com.unity.test-framework": "1.1.33",
     "com.unity.test-framework.performance": "3.0.3",
     "com.unity.ugui": "1.0.0",
